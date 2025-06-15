@@ -1,0 +1,4 @@
+doc/tags
+*.log
+**/*.luarc.json
+lazy-lock.json
