@@ -1,9 +1,3 @@
-vim.lsp.enable({
-  'gopls',
-  'lua_ls',
-  'ty',
-})
-
 return {
   {
     'neovim/nvim-lspconfig',

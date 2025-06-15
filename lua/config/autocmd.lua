@@ -4,6 +4,8 @@ local function augroup(name)
   return vim.api.nvim_create_augroup('user ' .. name, { clear = true })
 end
 
+vim.api.nvim_create_autocmd('BufEnter', { command = [[set formatoptions-=cro]] })
+
 -- auto open fzf-lua when opening a directory
 vim.api.nvim_create_autocmd('VimEnter', {
   callback = function(data)
@@ -113,27 +115,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
         buffer = event.buf,
         group = highlight_augroup,
         callback = vim.lsp.buf.clear_references,
-      })
-
-      -- Configure diagnostics settings
-      vim.diagnostic.config({
-        virtual_lines = false,
-        underline = false,
-
-        float = {
-          show_header = false,
-          format = function(diagnostic)
-            if diagnostic.code then
-              return string.format(
-                '%s(%s) - %s',
-                diagnostic.source,
-                diagnostic.code,
-                diagnostic.message
-              )
-            end
-            return string.format('%s - %s', diagnostic.source, diagnostic.message)
-          end,
-        },
       })
 
       -- When LSP detaches: Clears the highlighting
