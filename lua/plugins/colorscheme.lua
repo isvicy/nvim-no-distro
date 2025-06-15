@@ -11,10 +11,8 @@ end
 
 local pickedTheme
 local p = math.random()
-if p < 0.3 then
+if p < 0.1 then
   pickedTheme = 'trundra'
-elseif p < 0.4 then
-  pickedTheme = 'zenbones'
 elseif p < 0.6 then
   pickedTheme = 'black-metal'
 else
@@ -45,22 +43,6 @@ return {
       })
       vim.cmd([[set background=dark]])
       vim.cmd([[colorscheme vesper]])
-    end,
-  },
-  {
-    'zenbones-theme/zenbones.nvim',
-    dependencies = 'rktjmp/lush.nvim',
-    lazy = false,
-
-    priority = 1000,
-    config = function()
-      if not imPicked('zenbones') then
-        return
-      end
-
-      vim.g.zenbones_darken_comments = 45
-      vim.cmd([[set background=light]])
-      vim.cmd([[colorscheme zenbones]])
     end,
   },
   {
