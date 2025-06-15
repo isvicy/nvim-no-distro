@@ -114,13 +114,7 @@ return {
     'dgagn/diagflow.nvim',
     event = 'LspAttach',
     opts = function()
-      vim.diagnostic.config({
-        virtual_text = false,
-
-        virtual_lines = true,
-      })
       return {
-
         format = function(diagnostic)
           if diagnostic.code then
             return string.format(
