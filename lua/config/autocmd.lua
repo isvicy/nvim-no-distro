@@ -64,6 +64,23 @@ vim.keymap.set(
   { noremap = true, silent = true, desc = '查看当前行的 commit diff' }
 )
 
+-- LspAttach events
+-- create a split to go to definition
+vim.api.nvim_create_autocmd('LspAttach', {
+  callback = function()
+    local opts = { noremap = true, silent = true }
+    vim.keymap.set('n', '<leader>v', function()
+      vim.cmd('vsp')
+      vim.lsp.buf.definition()
+      vim.defer_fn(function()
+        vim.cmd('normal! zz')
+      end, 10) -- Delay in milliseconds
+    end, opts)
+  end,
+  group = augroup('go to definition split'),
+  desc = 'go to definition in a split',
+})
+-- create keymaps for LSP
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
   callback = function(event)
@@ -71,20 +88,28 @@ vim.api.nvim_create_autocmd('LspAttach', {
       vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
     end
 
-    -- defaults:
-    -- https://neovim.io/doc/user/news-0.11.html#_defaults
+    -- LSP keymaps
+    map(
+      'gd',
+      '<cmd>FzfLua lsp_definitions jump1=true ignore_current_line=true<cr>',
+      'Goto Definition'
+    )
+    map('gr', '<cmd>FzfLua lsp_references jump1=true ignore_current_line=true<cr>', 'References')
+    map(
+      'gI',
+      '<cmd>FzfLua lsp_implementations jump1=true ignore_current_line=true<cr>',
+      'Goto Implementation'
+    )
+    map(
+      'gy',
+      '<cmd>FzfLua lsp_typedefs jump1=true ignore_current_line=true<cr>',
+      'Goto Type Definition'
+    )
     map('gl', vim.diagnostic.open_float, 'Open Diagnostic Float')
     map('K', vim.lsp.buf.hover, 'Hover Documentation')
-    map('gs', vim.lsp.buf.signature_help, 'Signature Documentation')
-    map('gD', vim.lsp.buf.declaration, 'Goto Declaration')
+    map('<leader>cr', vim.lsp.buf.rename, 'Rename all references')
     map('<leader>ca', vim.lsp.buf.code_action, 'Code Action')
-    map('grn', vim.lsp.buf.rename, 'Rename all references')
-    map('<leader>lf', vim.lsp.buf.format, 'Format')
-    map(
-      '<leader>v',
-      '<cmd>vsplit | lua vim.lsp.buf.definition()<cr>',
-      'Goto Definition in Vertical Split'
-    )
+    map('<leader>cf', vim.lsp.buf.format, 'Format')
 
     local function client_supports_method(client, method, bufnr)
       if vim.fn.has('nvim-0.11') == 1 then
