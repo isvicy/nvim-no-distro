@@ -68,3 +68,14 @@ vim.o.scrolloff = 10
 -- See `:help 'confirm'`
 
 vim.o.confirm = true
+
+vim.opt.expandtab = true -- Use spaces instead of tabs
+vim.opt.fillchars = {
+  foldopen = '',
+  foldclose = '',
+  fold = ' ',
+  foldsep = ' ',
+  diff = '╱',
+  eob = ' ',
+}
+vim.opt.foldlevel = 99
