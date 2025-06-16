@@ -55,3 +55,13 @@ keymap_set('i', '<c-n>', '<nop>')
 
 -- Highlight current word under cursor without jumping
 keymap_set('n', '*', ':execute "normal! *N"<cr>')
+
+-- lsp defaults:
+-- https://neovim.io/doc/user/news-0.11.html#_defaults
+-- remove defaulty keymaps
+vim.keymap.del('n', 'grr')
+vim.keymap.del('n', 'gra')
+vim.keymap.del('n', 'grn')
+vim.keymap.del('n', 'gri')
+vim.keymap.del('n', 'gO')
+vim.keymap.del('i', '<C-S>')
