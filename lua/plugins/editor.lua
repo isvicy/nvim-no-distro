@@ -448,4 +448,9 @@ return {
       indent = { enable = true, disable = { 'ruby' } },
     },
   },
+  {
+    'windwp/nvim-autopairs',
+    event = 'InsertEnter',
+    opts = {},
+  },
 }
