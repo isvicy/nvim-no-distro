@@ -88,7 +88,8 @@ return {
         theme = 'doom',
         hide = { statusline = true },
         config = {
-          header = vim.split(string.rep('\n', 8) .. logo, '\n'),
+          header = vim.split(logo, '\n'),
+          vertical_center = true,
           center = {
             {
               action = 'FzfLua files',
