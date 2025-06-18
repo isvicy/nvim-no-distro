@@ -13,8 +13,10 @@ local pickedTheme
 local p = math.random()
 if p < 0.1 then
   pickedTheme = 'trundra'
-elseif p < 0.6 then
+elseif p < 0.3 then
   pickedTheme = 'black-metal'
+elseif p < 0.6 then
+  pickedTheme = 'sakura'
 else
   pickedTheme = 'vesper'
 end
@@ -75,6 +77,48 @@ return {
         variant = 'dark',
       })
       require('black-metal').load()
+    end,
+  },
+  {
+    'anAcc22/sakura.nvim',
+    dependencies = { 'rktjmp/lush.nvim' },
+    priority = 1000,
+    init = function()
+      if not imPicked('sakura') then
+        return
+      end
+
+      vim.cmd.colorscheme('sakura')
+      local purple = '#a289a1'
+
+      local highlights = {
+        --general
+        ModeMsg = { fg = purple },
+        CursorLineNr = { fg = purple },
+
+        -- git signs
+        GitSignsAdd = { fg = purple },
+        GitSignsAddNr = { fg = purple },
+        GitSignsAddLn = { fg = purple },
+        GitSignsChange = { fg = purple },
+        GitSignsChangeNr = { fg = purple },
+        GitSignsChangeLn = { fg = purple },
+        GitSignsChangedelete = { fg = purple },
+
+        -- file tree
+        NvimTreeGitDirty = { fg = purple },
+        NvimTreeGitStaged = { fg = purple },
+        NvimTreeGitMerge = { fg = purple },
+        NvimTreeGitRenamed = { fg = purple },
+        NvimTreeGitNew = { fg = purple },
+        NvimTreeGitDeleted = { fg = purple },
+        NvimTreeSpecialFile = { bold = true },
+      }
+
+      -- set highlight colors
+      for group, colors in pairs(highlights) do
+        vim.api.nvim_set_hl(0, group, colors)
+      end
     end,
   },
 }
