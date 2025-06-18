@@ -31,7 +31,10 @@ return {
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        go = { 'gofumpt', "goimports" },
+        go = { 'gofumpt', 'goimports' },
+        nix = { 'alejandra' },
+        json = { 'jq' },
+        yaml = { 'yq' },
       },
     },
   },
