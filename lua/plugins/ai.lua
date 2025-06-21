@@ -1,11 +1,7 @@
 return {
   {
     'dlants/magenta.nvim',
-    keys = {
-      { '<leader>mt', desc = 'Toggle Magenta' },
-      { '<leader>mb', desc = 'Add current buffer to Magenta' },
-      { '<leader>mp', desc = 'Send current selection to Magenta' },
-    },
+    lazy = false,
     build = 'npm install --frozen-lockfile',
     opts = {
       profiles = {
@@ -13,8 +9,8 @@ return {
           name = 'custom',
           provider = 'anthropic',
           model = 'claude-3-7-sonnet-latest',
-          apiKeyEnvVar = 'ANTHROPIC_API_KEY',
-          baseUrl = vim.env.ANTHROPIC_API_BASE,
+          apiKeyEnvVar = 'CUSTOM_ANTHROPIC_API_KEY',
+          baseUrl = vim.env.CUSTOM_ANTHROPIC_API_BASE,
         },
       },
     },
