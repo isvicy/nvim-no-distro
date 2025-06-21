@@ -206,6 +206,7 @@ return {
     end,
     config = function(_, opts)
       require('fzf-lua').setup(opts)
+      require("fzf-lua").register_ui_select()
     end,
     keys = {
       { '<c-j>', '<c-j>', ft = 'fzf', mode = 't', nowait = true },
