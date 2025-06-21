@@ -23,6 +23,7 @@ return {
         json = { 'jq' },
         yaml = { 'yq' },
         python = { 'black', 'isort' },
+        html = { 'htmlbeautifier' },
       },
     },
   },
