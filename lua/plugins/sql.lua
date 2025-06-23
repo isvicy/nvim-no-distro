@@ -65,23 +65,6 @@ return {
     end,
   },
 
-  -- blink.cmp integration
-  {
-    'saghen/blink.cmp',
-    optional = true,
-    opts = {
-      sources = {
-        default = { 'dadbod' },
-        providers = {
-          dadbod = { name = 'Dadbod', module = 'vim_dadbod_completion.blink' },
-        },
-      },
-    },
-    dependencies = {
-      'kristijanhusak/vim-dadbod-completion',
-    },
-  },
-
   -- Linters & formatters
   {
     'mfussenegger/nvim-lint',
