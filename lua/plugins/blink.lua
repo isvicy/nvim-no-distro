@@ -29,6 +29,7 @@ return {
         opts = {},
       },
       'folke/lazydev.nvim',
+      'kristijanhusak/vim-dadbod-completion',
     },
     --- @module 'blink.cmp'
     --- @type blink.cmp.Config
@@ -78,9 +79,10 @@ return {
       },
 
       sources = {
-        default = { 'lsp', 'path', 'snippets', 'lazydev' },
+        default = { 'lsp', 'path', 'snippets', 'lazydev', 'dadbod' },
         providers = {
           lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
+          dadbod = { name = 'Dadbod', module = 'vim_dadbod_completion.blink' },
         },
       },
 
