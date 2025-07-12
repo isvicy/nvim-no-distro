@@ -79,3 +79,7 @@ vim.opt.fillchars = {
   eob = ' ',
 }
 vim.opt.foldlevel = 99
+
+vim.opt.tabstop = 2 -- Number of spaces tabs count for
+vim.opt.shiftround = true -- Round indent
+vim.opt.shiftwidth = 2 -- Size of an indent
