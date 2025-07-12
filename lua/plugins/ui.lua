@@ -130,4 +130,31 @@ return {
       return opts
     end,
   },
+  {
+    "anuvyklack/windows.nvim",
+    dependencies = "anuvyklack/middleclass",
+    keys = {
+      {
+        "<c-w>z",
+        "<cmd>WindowsMaximize<cr>",
+        desc = "Maximize current window",
+      },
+      {
+        "<c-w>|",
+        "<cmd>WindowsMaximizeVertically<cr>",
+        desc = "Maximize current window vertically",
+      },
+      {
+        "<c-w>_",
+        "<cmd>WindowsMaximizeHorizontally<cr>",
+        desc = "Maximize current window horizontally",
+      },
+      {
+        "<c-w>=",
+        "<cmd>WindowsEqualize<cr>",
+        desc = "Equalize current window",
+      },
+    },
+    opts = {},
+  }
 }
