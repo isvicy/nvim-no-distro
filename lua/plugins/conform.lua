@@ -21,6 +21,7 @@ return {
         nix = { 'alejandra' },
         json = { 'jq' },
         yaml = { 'yq' },
+        python = { 'black', 'isort' },
       },
     },
   },
