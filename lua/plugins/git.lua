@@ -160,6 +160,7 @@ return {
         },
         callbacks = {
           ['git.enceinte.cc'] = require('gitlinker.hosts').get_gogs_type_url,
+          ['dev.msh.team'] = require('gitlinker.hosts').get_gitlab_type_url,
         },
       })
     end,
