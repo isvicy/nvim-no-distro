@@ -5,11 +5,11 @@ return {
     cmd = { 'ConformInfo' },
     keys = {
       {
-        '<leader>f',
+        '<leader>fm',
         function()
           require('conform').format({ async = true, lsp_format = 'fallback' })
         end,
-        mode = '',
+        mode = 'n',
         desc = '[F]ormat buffer',
       },
     },
@@ -24,14 +24,14 @@ return {
           return nil
         else
           return {
-            timeout_ms = 3000,
+            timeout_ms = 500,
             lsp_format = 'fallback',
           }
         end
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        go = { 'gofumpt' },
+        go = { 'gofumpt', "goimports" },
       },
     },
   },
