@@ -1,7 +1,7 @@
 vim.lsp.enable({
   'gopls',
   'lua_ls',
-  'ty',
+  'ruff',
 })
 
 vim.diagnostic.config({
