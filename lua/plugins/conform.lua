@@ -15,6 +15,7 @@ return {
     },
     opts = {
       notify_on_error = false,
+      formatters = {},
       formatters_by_ft = {
         lua = { 'stylua' },
         go = { 'gofumpt', 'goimports' },
