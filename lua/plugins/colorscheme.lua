@@ -1,124 +1,47 @@
-local handle = io.popen('od -An -N4 -i /dev/urandom')
-if not handle then
-  error('Failed to open /dev/urandom')
-end
-local result = handle:read('*a')
-handle:close()
-local seed = tonumber(result)
-if seed then
-  math.randomseed(seed)
-end
-
-local pickedTheme
-local p = math.random()
-if p < 0.1 then
-  pickedTheme = 'trundra'
-elseif p < 0.3 then
-  pickedTheme = 'black-metal'
-elseif p < 0.6 then
-  pickedTheme = 'sakura'
-else
-  pickedTheme = 'vesper'
-end
-
-pickedTheme = vim.env.NVIM_COLORSCHEME or pickedTheme
-
-local function imPicked(theme)
-  if pickedTheme == theme then
-    return true
-  end
-  return false
-end
-
 return {
   {
-    'datsfilipe/vesper.nvim',
+    'lmantw/themify.nvim',
     lazy = false,
-    priority = 1000,
+    priority = 999,
+    dependencies = { 'rktjmp/lush.nvim' }, -- acutally, this is needed by sakura.nvim
     config = function()
-      if not imPicked('vesper') then
-        return
+      local function loader()
+        local Themify = require('themify.api')
+
+        math.randomseed(os.time())
+
+        local colorscheme_id =
+          Themify.Manager.colorschemes[math.random(#Themify.Manager.colorschemes)]
+        local colorscheme_data = Themify.Manager.get(colorscheme_id)
+
+        Themify.set_current(
+          colorscheme_id,
+          colorscheme_data.themes[math.random(#colorscheme_data.themes)]
+        )
       end
 
-      require('vesper').setup({
-        transparent = false,
+      require('themify').setup({
+        'datsfilipe/vesper.nvim',
+        'sam4llis/nvim-tundra',
+        {
+          'metalelf0/black-metal-theme-neovim',
+          after = function()
+            require('black-metal').setup({
+              theme = 'bathory',
+              variant = 'dark',
+            })
+            require('black-metal').load()
+          end,
+          whitelist = { 'bathory' },
+        },
+        {
+          'anAcc22/sakura.nvim',
+        },
+
+        loader = loader,
       })
-      vim.cmd([[set background=dark]])
-      vim.cmd([[colorscheme vesper]])
-    end,
-  },
-  {
-    'sam4llis/nvim-tundra',
-    lazy = false,
-    priority = 1000,
-    opts = {
-      transparent_background = false,
-    },
-    config = function()
-      if not imPicked('trundra') then
-        return
-      end
 
-      vim.api.nvim_set_hl(0, 'NonText', { fg = '#888888' })
-      vim.cmd([[colorscheme tundra]])
-    end,
-  },
-  {
-    'metalelf0/black-metal-theme-neovim',
-    lazy = false,
-    priority = 1000,
-    config = function()
-      if not imPicked('black-metal') then
-        return
-      end
-
-      require('black-metal').setup({
-        theme = 'bathory',
-        variant = 'dark',
-      })
-      require('black-metal').load()
-    end,
-  },
-  {
-    'anAcc22/sakura.nvim',
-    dependencies = { 'rktjmp/lush.nvim' },
-    priority = 1000,
-    init = function()
-      if not imPicked('sakura') then
-        return
-      end
-
-      vim.cmd.colorscheme('sakura')
-      local purple = '#a289a1'
-
-      local highlights = {
-        --general
-        ModeMsg = { fg = purple },
-        CursorLineNr = { fg = purple },
-
-        -- git signs
-        GitSignsAdd = { fg = purple },
-        GitSignsAddNr = { fg = purple },
-        GitSignsAddLn = { fg = purple },
-        GitSignsChange = { fg = purple },
-        GitSignsChangeNr = { fg = purple },
-        GitSignsChangeLn = { fg = purple },
-        GitSignsChangedelete = { fg = purple },
-
-        -- file tree
-        NvimTreeGitDirty = { fg = purple },
-        NvimTreeGitStaged = { fg = purple },
-        NvimTreeGitMerge = { fg = purple },
-        NvimTreeGitRenamed = { fg = purple },
-        NvimTreeGitNew = { fg = purple },
-        NvimTreeGitDeleted = { fg = purple },
-        NvimTreeSpecialFile = { bold = true },
-      }
-
-      -- set highlight colors
-      for group, colors in pairs(highlights) do
-        vim.api.nvim_set_hl(0, group, colors)
-      end
+      vim.api.nvim_set_keymap('n', '<A-t>', ':Themify<CR>', { noremap = true, silent = true })
     end,
   },
 }
