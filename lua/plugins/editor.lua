@@ -361,7 +361,7 @@ return {
       },
 
       {
-        '<A-i>',
+        '<A-f>',
         function()
           require('nvterm.terminal').toggle('float')
         end,
