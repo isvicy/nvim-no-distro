@@ -1,21 +1,5 @@
 return {
   {
-    'dlants/magenta.nvim',
-    lazy = false,
-    build = 'npm install --frozen-lockfile',
-    opts = {
-      profiles = {
-        {
-          name = 'custom',
-          provider = 'anthropic',
-          model = 'claude-3-7-sonnet-latest',
-          apiKeyEnvVar = 'CUSTOM_ANTHROPIC_API_KEY',
-          baseUrl = vim.env.CUSTOM_ANTHROPIC_API_BASE,
-        },
-      },
-    },
-  },
-  {
     'zbirenbaum/copilot.lua',
     cmd = 'Copilot',
     event = 'InsertEnter',
