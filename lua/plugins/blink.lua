@@ -79,10 +79,18 @@ return {
       },
 
       sources = {
-        default = { 'lsp', 'path', 'snippets', 'lazydev', 'dadbod' },
+        default = { 'lsp', 'buffer', 'snippets', 'path' },
+        per_filetype = {
+          sql = { 'dadbod' }, -- Use Dadbod completion for SQL files
+          lua = { inherit_defaults = true, 'lazydev' },
+        },
         providers = {
-          lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
-          dadbod = { name = 'Dadbod', module = 'vim_dadbod_completion.blink' },
+          lsp = { max_items = 10, fallbacks = {}, score_offset = 10 }, -- disable fallbacks to always enable buffer source
+          buffer = { max_items = 3, score_offset = 9 },
+          snippets = { max_items = 2, score_offset = 8 },
+          path = { max_items = 3, score_offset = 7 },
+          lazydev = { module = 'lazydev.integrations.blink', score_offset = 10 },
+          dadbod = { name = 'Dadbod', module = 'vim_dadbod_completion.blink', score_offset = 10 },
         },
       },
 
