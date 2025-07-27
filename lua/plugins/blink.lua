@@ -1,3 +1,12 @@
+local source_priority = {
+  lsp = 1,
+  buffer = 2,
+  snippets = 3,
+  path = 4,
+  lazydev = 5,
+  dadbod = 6,
+}
+
 return {
   { -- Autocompletion
     'saghen/blink.cmp',
@@ -85,12 +94,12 @@ return {
           lua = { inherit_defaults = true, 'lazydev' },
         },
         providers = {
-          lsp = { max_items = 10, fallbacks = {}, score_offset = 10 }, -- disable fallbacks to always enable buffer source
-          buffer = { max_items = 3, score_offset = 9 },
-          snippets = { max_items = 2, score_offset = 8 },
-          path = { max_items = 3, score_offset = 7 },
-          lazydev = { module = 'lazydev.integrations.blink', score_offset = 10 },
-          dadbod = { name = 'Dadbod', module = 'vim_dadbod_completion.blink', score_offset = 10 },
+          lsp = { max_items = 10, fallbacks = {} }, -- disable fallbacks to always enable buffer source
+          buffer = { max_items = 3 },
+          snippets = { max_items = 2 },
+          path = { max_items = 3 },
+          lazydev = { module = 'lazydev.integrations.blink' },
+          dadbod = { name = 'Dadbod', module = 'vim_dadbod_completion.blink' },
         },
       },
 
@@ -103,7 +112,21 @@ return {
       -- the rust implementation via `'prefer_rust_with_warning'`
       --
       -- See :h blink-cmp-config-fuzzy for more information
-      fuzzy = { implementation = 'lua' },
+      fuzzy = {
+        implementation = 'rust',
+        sorts = {
+          function(a, b)
+            local a_priority = source_priority[a.source_id]
+            local b_priority = source_priority[b.source_id]
+            if a_priority ~= b_priority then
+              return a_priority > b_priority
+            end
+          end,
+          -- defaults
+          'score',
+          'sort_text',
+        },
+      },
 
       -- Shows a signature help window while you type arguments for a function
       signature = { enabled = true },
