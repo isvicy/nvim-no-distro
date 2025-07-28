@@ -3,7 +3,6 @@ return {
     'lmantw/themify.nvim',
     lazy = false,
     priority = 999,
-    dependencies = { 'rktjmp/lush.nvim' }, -- acutally, this is needed by sakura.nvim
     config = function()
       local function loader()
         local Themify = require('themify.api')
@@ -34,11 +33,10 @@ return {
           end,
           whitelist = { 'bathory' },
         },
-        {
-          'anAcc22/sakura.nvim',
-        },
 
         loader = loader,
+        async = true,
+        activity = true,
       })
 
       vim.api.nvim_set_keymap('n', '<A-t>', ':Themify<CR>', { noremap = true, silent = true })
