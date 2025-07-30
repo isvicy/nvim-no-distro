@@ -1,10 +1,10 @@
 local source_priority = {
-  lsp = 1,
-  buffer = 2,
-  snippets = 3,
-  path = 4,
-  lazydev = 5,
-  dadbod = 6,
+  lsp = 10,
+  buffer = 9,
+  snippets = 8,
+  path = 7,
+  lazydev = 10,
+  dadbod = 10,
 }
 
 return {
