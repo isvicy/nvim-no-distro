@@ -228,7 +228,7 @@ return {
         '<cmd>FzfLua buffers sort_mru=true sort_lastused=true<cr>',
         desc = 'Buffers',
       },
-      { '<leader>ff', '<cmd>FzfLua files<cr>', desc = 'Find Files (Root Dir)' },
+      -- { '<leader>ff', '<cmd>FzfLua files<cr>', desc = 'Find Files (Root Dir)' },
       {
         '<leader>fc',
         function()
@@ -505,5 +505,20 @@ return {
     'windwp/nvim-autopairs',
     event = 'InsertEnter',
     opts = {},
+  },
+  {
+    'dmtrKovalenko/fff.nvim',
+    build = 'cargo build --release',
+    opts = {},
+    keys = {
+      {
+        '<leader>ff',
+        function()
+          -- Use the public find_files() function to open the picker
+          require('fff').find_files()
+        end,
+        desc = 'Toggle FFF',
+      },
+    },
   },
 }
