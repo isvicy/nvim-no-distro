@@ -3,6 +3,7 @@ return {
     'lmantw/themify.nvim',
     lazy = false,
     priority = 999,
+    dependencies = 'rktjmp/lush.nvim', -- Required for lush themes, like zenbones
     config = function()
       local function loader()
         local Themify = require('themify.api')
@@ -32,6 +33,13 @@ return {
             require('black-metal').load()
           end,
           whitelist = { 'bathory' },
+        },
+        {
+          before = function()
+            vim.cmd [[set background=light]]
+          end,
+          'zenbones-theme/zenbones.nvim',
+          whitelist = { 'zenbones' },
         },
 
         loader = loader,
