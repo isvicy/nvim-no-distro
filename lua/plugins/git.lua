@@ -81,7 +81,8 @@ local function delete_worktree()
                 vim.cmd('cd ' .. actual_git_root)
               end
 
-              Worktree.delete_worktree(path)
+              -- considering the user already confirmed deletion, we use force deletion
+              Worktree.delete_worktree(path, true)
               print('Deleted worktree: ' .. path)
 
               if is_current then
