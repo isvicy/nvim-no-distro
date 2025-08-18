@@ -1,3 +1,3 @@
 return {
-  'tpope/vim-sleuth',
+  'tpope/vim-sleuth', -- This plugin automatically adjusts 'shiftwidth' and 'expandtab' heuristically based on the current file
 }
