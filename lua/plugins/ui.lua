@@ -92,7 +92,9 @@ return {
           vertical_center = true,
           center = {
             {
-              action = 'FzfLua files',
+              action = function()
+                require('fff').find_files()
+              end,
               desc = '',
               icon = '',
               key = 'f',
@@ -131,30 +133,30 @@ return {
     end,
   },
   {
-    "anuvyklack/windows.nvim",
-    dependencies = "anuvyklack/middleclass",
+    'anuvyklack/windows.nvim',
+    dependencies = 'anuvyklack/middleclass',
     keys = {
       {
-        "<c-w>z",
-        "<cmd>WindowsMaximize<cr>",
-        desc = "Maximize current window",
+        '<c-w>z',
+        '<cmd>WindowsMaximize<cr>',
+        desc = 'Maximize current window',
       },
       {
-        "<c-w>|",
-        "<cmd>WindowsMaximizeVertically<cr>",
-        desc = "Maximize current window vertically",
+        '<c-w>|',
+        '<cmd>WindowsMaximizeVertically<cr>',
+        desc = 'Maximize current window vertically',
       },
       {
-        "<c-w>_",
-        "<cmd>WindowsMaximizeHorizontally<cr>",
-        desc = "Maximize current window horizontally",
+        '<c-w>_',
+        '<cmd>WindowsMaximizeHorizontally<cr>',
+        desc = 'Maximize current window horizontally',
       },
       {
-        "<c-w>=",
-        "<cmd>WindowsEqualize<cr>",
-        desc = "Equalize current window",
+        '<c-w>=',
+        '<cmd>WindowsEqualize<cr>',
+        desc = 'Equalize current window',
       },
     },
     opts = {},
-  }
+  },
 }
