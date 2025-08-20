@@ -41,6 +41,14 @@ return {
           'zenbones-theme/zenbones.nvim',
           whitelist = { 'zenbones' },
         },
+        {
+          'mitch1000/backpack',
+          after = function()
+            require('backpack').setup({
+              contrast = 'extreme',
+            })
+          end,
+        },
 
         loader = loader,
         async = true,
