@@ -76,6 +76,9 @@ vim.opt.shiftwidth = 2 -- Size of an indent
 
 vim.o.wrap = false
 
+-- Make sure only one global statusline is used
+vim.opt.laststatus = 3
+
 vim.o.foldcolumn = '0' -- '0' is not bad
 vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
 vim.o.foldlevelstart = 99
