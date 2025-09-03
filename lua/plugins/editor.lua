@@ -328,7 +328,7 @@ return {
       normalModeSearch = true,
       headerMaxWidth = 80,
       engines = {
-        ripgrep = { defaults = { flags = '--smart-case --multiline' } },
+        ripgrep = { defaults = { flags = '--smart-case --multiline --hidden' } },
         astgrep = { defaults = { flags = '--strictness relaxed' } },
       },
     },
