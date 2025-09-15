@@ -23,32 +23,6 @@ return {
       require('themify').setup({
         'datsfilipe/vesper.nvim',
         'sam4llis/nvim-tundra',
-        {
-          'metalelf0/black-metal-theme-neovim',
-          after = function()
-            require('black-metal').setup({
-              theme = 'bathory',
-              variant = 'dark',
-            })
-            require('black-metal').load()
-          end,
-          whitelist = { 'bathory' },
-        },
-        {
-          before = function()
-            vim.cmd [[set background=light]]
-          end,
-          'zenbones-theme/zenbones.nvim',
-          whitelist = { 'zenbones' },
-        },
-        {
-          'mitch1000/backpack',
-          after = function()
-            require('backpack').setup({
-              contrast = 'extreme',
-            })
-          end,
-        },
 
         loader = loader,
         async = true,
