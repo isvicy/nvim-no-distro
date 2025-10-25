@@ -8,6 +8,15 @@ return {
       local function loader()
         local Themify = require('themify.api')
 
+        -- use light theme when using e-ink display
+        if vim.env.INK then
+          local id = 'yorickpeterse/nvim-grey'
+          local colorscheme_data = Themify.Manager.get(id)
+          Themify.set_current(id, colorscheme_data.themes[math.random(#colorscheme_data.themes)])
+
+          return
+        end
+
         math.randomseed(os.time())
 
         local colorscheme_id =
@@ -23,6 +32,7 @@ return {
       require('themify').setup({
         'datsfilipe/vesper.nvim',
         'sam4llis/nvim-tundra',
+        'yorickpeterse/nvim-grey',
 
         loader = loader,
         async = true,
