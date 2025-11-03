@@ -295,12 +295,10 @@ return {
         '<leader>fw',
         function()
           local grug = require('grug-far')
-          local ext = vim.bo.buftype == '' and vim.fn.expand('%:e')
 
           grug.open({
             transient = true,
             prefills = {
-              filesFilter = ext and ext ~= '' and '*.' .. ext or nil,
               search = vim.fn.expand('<cword>'),
             },
           })
@@ -312,12 +310,8 @@ return {
         '<leader>sr',
         function()
           local grug = require('grug-far')
-          local ext = vim.bo.buftype == '' and vim.fn.expand('%:e')
           grug.open({
             transient = true,
-            prefills = {
-              filesFilter = ext and ext ~= '' and '*.' .. ext or nil,
-            },
           })
         end,
         mode = { 'n', 'v' },
@@ -328,7 +322,7 @@ return {
       normalModeSearch = true,
       headerMaxWidth = 80,
       engines = {
-        ripgrep = { defaults = { flags = '--smart-case --multiline --hidden' } },
+        ripgrep = { defaults = { flags = '--smart-case --hidden' } },
         astgrep = { defaults = { flags = '--strictness relaxed' } },
       },
     },
