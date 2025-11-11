@@ -3,6 +3,8 @@ vim.lsp.enable({
   'lua_ls',
   'ruff',
   'nil_ls',
+  'golangci_lint_ls',
+  'docker_language_server',
 })
 
 vim.diagnostic.config({

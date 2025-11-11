@@ -24,6 +24,7 @@ return {
         yaml = { 'yq' },
         python = { 'black', 'isort' },
         html = { 'htmlbeautifier' },
+        markdown = { 'deno_fmt' },
       },
     },
   },

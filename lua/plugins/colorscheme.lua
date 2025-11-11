@@ -32,7 +32,6 @@ return {
       require('themify').setup({
         'datsfilipe/vesper.nvim',
         'sam4llis/nvim-tundra',
-        'yorickpeterse/nvim-grey',
 
         loader = loader,
         async = true,
