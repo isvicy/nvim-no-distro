@@ -10,7 +10,7 @@ local source_priority = {
 return {
   { -- Autocompletion
     'saghen/blink.cmp',
-    event = 'VimEnter',
+    event = 'InsertEnter', -- Load only when entering insert mode for better startup time
     version = '1.*',
     dependencies = {
       -- Snippet Engine

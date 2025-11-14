@@ -172,6 +172,7 @@ return {
   },
   {
     'lewis6991/gitsigns.nvim',
+    version = 'v0.9.*', -- Pin to v0.9.x for stability
     event = { 'BufReadPost', 'BufNewFile', 'BufWritePre' },
     opts = {
       signs = {

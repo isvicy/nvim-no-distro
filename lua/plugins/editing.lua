@@ -1,7 +1,7 @@
 return {
   {
     'folke/todo-comments.nvim',
-    event = 'VimEnter',
+    event = { 'BufReadPost', 'BufNewFile' }, -- Load on actual buffer read instead of VimEnter
     dependencies = { 'nvim-lua/plenary.nvim' },
     opts = { signs = false },
   },

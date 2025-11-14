@@ -1,6 +1,7 @@
 return {
   {
     'folke/which-key.nvim',
+    version = '3.*', -- Pin to v3.x for stability
     event = 'VeryLazy',
     opts_extend = { 'spec' },
     opts = {
