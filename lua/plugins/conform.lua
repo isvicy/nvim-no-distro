@@ -30,6 +30,7 @@ return {
         html = { 'htmlbeautifier' },
         markdown = { 'deno_fmt' },
         sh = { 'shfmt', 'shellcheck' },
+        terraform = { 'terraform_fmt' },
       },
     },
   },

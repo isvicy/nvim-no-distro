@@ -6,6 +6,7 @@ vim.lsp.enable({
   'golangci_lint_ls',
   'docker_language_server',
   'bashls',
+  'terraformls',
 })
 
 vim.diagnostic.config({
