@@ -2,6 +2,7 @@ return {
   {
     'mistricky/codesnap.nvim',
     build = 'make build_generator',
+    cmd = { 'CodeSnap', 'CodeSnapHighlight' },
     keys = {
       {
         '<leader>ccc',
