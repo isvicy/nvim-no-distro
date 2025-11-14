@@ -4,9 +4,9 @@
 ---@param rhs string|function Right-hand side command or function
 ---@param opts table|nil Optional keymap options
 local function keymap_set(mode, lhs, rhs, opts)
-  local default_opts = { noremap = true, silent = true }
+  local default_opts = { silent = true }
   local final_opts = opts and vim.tbl_extend('force', default_opts, opts) or default_opts
-  vim.api.nvim_set_keymap(mode, lhs, rhs, final_opts)
+  vim.keymap.set(mode, lhs, rhs, final_opts)
 end
 
 -- Insert mode navigation
@@ -44,17 +44,19 @@ keymap_set('n', '<Up>', ':resize -1<CR>')
 keymap_set('n', '<Down>', ':resize +1<CR>')
 
 -- Move to window using the <ctrl> hjkl keys
-keymap_set('n', '<C-h>', '<C-w>h', { desc = 'Go to Left Window', noremap = false })
-keymap_set('n', '<C-j>', '<C-w>j', { desc = 'Go to Lower Window', noremap = false })
-keymap_set('n', '<C-k>', '<C-w>k', { desc = 'Go to Upper Window', noremap = false })
-keymap_set('n', '<C-l>', '<C-w>l', { desc = 'Go to Right Window', noremap = false })
+keymap_set('n', '<C-h>', '<C-w>h', { desc = 'Go to Left Window' })
+keymap_set('n', '<C-j>', '<C-w>j', { desc = 'Go to Lower Window' })
+keymap_set('n', '<C-k>', '<C-w>k', { desc = 'Go to Upper Window' })
+keymap_set('n', '<C-l>', '<C-w>l', { desc = 'Go to Right Window' })
 
 -- Disable builtin keyword completion
 keymap_set('i', '<c-p>', '<nop>')
 keymap_set('i', '<c-n>', '<nop>')
 
 -- Highlight current word under cursor without jumping
-keymap_set('n', '*', ':execute "normal! *N"<cr>')
+keymap_set('n', '*', function()
+  vim.cmd.normal({ '*N', bang = true })
+end, { desc = 'Highlight word without jumping' })
 
 -- lsp defaults:
 -- https://neovim.io/doc/user/news-0.11.html#_defaults
