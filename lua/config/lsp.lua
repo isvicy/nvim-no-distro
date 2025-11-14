@@ -5,6 +5,7 @@ vim.lsp.enable({
   'nil_ls',
   'golangci_lint_ls',
   'docker_language_server',
+  'bashls',
 })
 
 vim.diagnostic.config({

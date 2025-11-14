@@ -15,7 +15,11 @@ return {
     },
     opts = {
       notify_on_error = false,
-      formatters = {},
+      formatters = {
+        shfmt = {
+          args = { '-i', '2', '-ci' },
+        },
+      },
       formatters_by_ft = {
         lua = { 'stylua' },
         go = { 'gofumpt', 'goimports' },
@@ -25,6 +29,7 @@ return {
         python = { 'black', 'isort' },
         html = { 'htmlbeautifier' },
         markdown = { 'deno_fmt' },
+        sh = { 'shfmt', 'shellcheck' },
       },
     },
   },
