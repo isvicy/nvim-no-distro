@@ -1,6 +1,7 @@
 return {
   {
     'ibhagwan/fzf-lua',
+    version = false, -- Use latest (actively developed)
     cmd = 'FzfLua',
     opts = function(_, _)
       local fzf = require('fzf-lua')

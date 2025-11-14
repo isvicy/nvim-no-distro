@@ -1,6 +1,7 @@
 return {
   {
     'nvim-treesitter/nvim-treesitter',
+    version = false, -- Use latest, but explicitly marked
     build = ':TSUpdate',
     main = 'nvim-treesitter.configs',
     opts = {
