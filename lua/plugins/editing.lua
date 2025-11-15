@@ -31,21 +31,6 @@ return {
     opts = {},
   },
   {
-    'dmtrKovalenko/fff.nvim',
-    build = 'cargo build --release',
-    opts = {},
-    keys = {
-      {
-        '<leader>ff',
-        function()
-          -- Use the public find_files() function to open the picker
-          require('fff').find_files()
-        end,
-        desc = 'Toggle FFF',
-      },
-    },
-  },
-  {
     'hotoo/pangu.vim',
     cmd = 'Pangu',
   },

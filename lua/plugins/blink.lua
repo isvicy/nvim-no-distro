@@ -11,12 +11,13 @@ return {
   { -- Autocompletion
     'saghen/blink.cmp',
     event = 'InsertEnter', -- Load only when entering insert mode for better startup time
+    -- we use this release tag only to make it download pre-built binary
     version = '1.*',
     dependencies = {
       -- Snippet Engine
       {
         'L3MON4D3/LuaSnip',
-        version = '2.*',
+        version = 'v2.*',
         build = (function()
           -- Build Step is needed for regex support in snippets.
           -- This step is not supported in many windows environments.

@@ -172,7 +172,6 @@ return {
   },
   {
     'lewis6991/gitsigns.nvim',
-    version = 'v0.*', -- Pin to v0.x (allow minor updates within major version)
     event = { 'BufReadPost', 'BufNewFile', 'BufWritePre' },
     opts = {
       signs = {
