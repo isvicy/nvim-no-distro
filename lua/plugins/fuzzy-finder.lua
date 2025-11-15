@@ -1,7 +1,6 @@
 return {
   {
     'ibhagwan/fzf-lua',
-    version = false, -- Use latest (actively developed)
     cmd = 'FzfLua',
     opts = function(_, _)
       local fzf = require('fzf-lua')
@@ -152,6 +151,28 @@ return {
           require('fzf-lua').lsp_live_workspace_symbols({})
         end,
         desc = 'Goto Symbol (Workspace)',
+      },
+    },
+  },
+  {
+    'dmtrKovalenko/fff.nvim',
+    build = function()
+      local is_nixos = vim.fn.executable('nixos-version') == 1
+      if is_nixos then
+        vim.fn.system('nix run .#release')
+      else
+        require('fff.download').download_or_build_binary()
+      end
+    end,
+    opts = {},
+    lazy = false,
+    keys = {
+      {
+        '<leader>ff',
+        function()
+          require('fff').find_files()
+        end,
+        desc = 'FFFind files',
       },
     },
   },
