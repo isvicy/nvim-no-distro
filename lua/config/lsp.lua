@@ -7,6 +7,7 @@ vim.lsp.enable({
   'docker_language_server',
   'bashls',
   'terraformls',
+  'rust_analyzer',
 })
 
 vim.diagnostic.config({
