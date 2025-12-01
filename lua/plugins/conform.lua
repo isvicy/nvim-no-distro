@@ -31,6 +31,7 @@ return {
         markdown = { 'deno_fmt' },
         sh = { 'shfmt', 'shellcheck' },
         terraform = { 'terraform_fmt' },
+        toml = { 'tombi' },
       },
     },
   },
