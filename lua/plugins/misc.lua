@@ -1,8 +1,8 @@
 return {
   {
-    'mistricky/codesnap.nvim',
+    'isvicy/codesnap.nvim',
     build = 'make build_generator',
-    cmd = { 'CodeSnap', 'CodeSnapHighlight' },
+    cmd = { 'CodeSnap', 'CodeSnapHighlight', 'CodeSnapSave' },
     keys = {
       {
         '<leader>ccc',
@@ -17,12 +17,42 @@ return {
         desc = 'Save selected code snapshot in ~/Pictures',
       },
     },
-    opts = {
-      save_path = '~/Pictures',
-      has_breadcrumbs = true,
-      bg_color = '#535c68',
-      watermark = '',
-    },
+    config = function()
+      local theme_map = {
+        vesper = { theme = 'vesper', bg_color = '#232323', editor_bg_color = '#101010' },
+        tundra = { theme = 'tundra', bg_color = '#1f2937', editor_bg_color = '#111827' },
+      }
+
+      local function update_codesnap_theme()
+        local colorscheme = vim.g.colors_name
+        local mapping = theme_map[colorscheme]
+        if mapping then
+          local static = require('codesnap.static')
+          static.config.theme = mapping.theme
+          static.config.bg_color = mapping.bg_color
+          static.config.editor_bg_color = mapping.editor_bg_color
+        end
+      end
+
+      require('codesnap').setup({
+        save_path = '~/Pictures',
+        has_breadcrumbs = true,
+        theme = 'vesper',
+        bg_color = '#232323',
+        editor_bg_color = '#101010',
+        bg_x_padding = 32,
+        bg_y_padding = 24,
+        watermark = '',
+      })
+
+      -- Set initial theme based on current colorscheme
+      update_codesnap_theme()
+
+      -- Listen for colorscheme changes
+      vim.api.nvim_create_autocmd('ColorScheme', {
+        callback = update_codesnap_theme,
+      })
+    end,
   },
   {
     'stevearc/aerial.nvim',
