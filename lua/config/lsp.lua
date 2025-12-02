@@ -10,6 +10,44 @@ vim.lsp.enable({
   'rust_analyzer',
 })
 
+vim.lsp.enable('basedpyright')
+vim.lsp.enable('ruff')
+vim.lsp.config['basedpyright'] = {
+  cmd = { 'basedpyright-langserver', '--stdio' },
+  filetypes = { 'python' },
+  root_markers = { 'pyproject.toml', 'setup.py', '.git', 'pyrightconfig.json' },
+  settings = {
+    basedpyright = {
+      disableOrganizeImports = true,
+      analysis = {
+        typeCheckingMode = 'standard',
+        autoSearchPaths = true,
+        useLibraryCodeForTypes = true,
+        diagnosticMode = 'openFilesOnly',
+      },
+    },
+  },
+  on_attach = function(client, _)
+    client.server_capabilities.documentFormattingProvider = false
+    client.server_capabilities.documentRangeFormattingProvider = false
+  end,
+}
+
+vim.lsp.config['ruff'] = {
+  cmd = { 'ruff', 'server' },
+  filetypes = { 'python' },
+  root_markers = { 'pyproject.toml', 'ruff.toml', '.git' },
+  init_options = {
+    settings = {
+      -- Ruff 专有设置
+      logLevel = 'debug',
+    },
+  },
+  on_attach = function(client, _)
+    client.server_capabilities.hoverProvider = false
+  end,
+}
+
 vim.diagnostic.config({
   virtual_lines = false, -- Disable virtual lines completely
   underline = false,
