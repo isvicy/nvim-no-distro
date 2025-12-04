@@ -30,8 +30,4 @@ return {
     event = 'InsertEnter',
     opts = {},
   },
-  {
-    'hotoo/pangu.vim',
-    cmd = 'Pangu',
-  },
 }
