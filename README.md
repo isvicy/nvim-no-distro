@@ -85,121 +85,121 @@ nvim
 
 ### General
 
-| Key | Mode | Description |
-|-----|------|-------------|
-| `<C-h/j/k/l>` | n | Navigate windows |
-| `<leader>p/P` | n | Paste from yank register |
-| `Y` | n | Yank to end of line |
-| `n/N` | n | Search with auto-center |
-| `*` | n | Highlight word without jumping |
-| `<Arrow keys>` | n | Resize windows |
+| Key            | Mode | Description                    |
+| -------------- | ---- | ------------------------------ |
+| `<C-h/j/k/l>`  | n    | Navigate windows               |
+| `<leader>p/P`  | n    | Paste from yank register       |
+| `Y`            | n    | Yank to end of line            |
+| `n/N`          | n    | Search with auto-center        |
+| `*`            | n    | Highlight word without jumping |
+| `<Arrow keys>` | n    | Resize windows                 |
 
 ### File/Find (`<leader>f`)
 
-| Key | Description |
-|-----|-------------|
-| `<leader><space>` | Find files |
-| `<leader>,` | Switch buffer |
-| `<leader>/` | Live grep |
-| `<leader>:` | Command history |
-| `<leader>fb` | Buffers |
-| `<leader>fc` | Find config files |
-| `<leader>fg` | Git files |
-| `<leader>fr` | Recent files |
-| `<leader>ff` | FFF file picker |
-| `<leader>fw` | Search current word |
+| Key               | Description         |
+| ----------------- | ------------------- |
+| `<leader><space>` | Find files          |
+| `<leader>,`       | Switch buffer       |
+| `<leader>/`       | Live grep           |
+| `<leader>:`       | Command history     |
+| `<leader>fb`      | Buffers             |
+| `<leader>fc`      | Find config files   |
+| `<leader>fg`      | Git files           |
+| `<leader>fr`      | Recent files        |
+| `<leader>ff`      | FFF file picker     |
+| `<leader>fw`      | Search current word |
 
 ### Search (`<leader>s`)
 
-| Key | Description |
-|-----|-------------|
-| `<leader>s"` | Registers |
-| `<leader>sb` | Buffer search |
-| `<leader>sd` | Document diagnostics |
-| `<leader>sD` | Workspace diagnostics |
-| `<leader>sg` | Grep |
-| `<leader>sh` | Help tags |
-| `<leader>sk` | Keymaps |
+| Key          | Description                  |
+| ------------ | ---------------------------- |
+| `<leader>s"` | Registers                    |
+| `<leader>sb` | Buffer search                |
+| `<leader>sd` | Document diagnostics         |
+| `<leader>sD` | Workspace diagnostics        |
+| `<leader>sg` | Grep                         |
+| `<leader>sh` | Help tags                    |
+| `<leader>sk` | Keymaps                      |
 | `<leader>sr` | Search and replace (GrugFar) |
-| `<leader>ss` | Document symbols |
-| `<leader>sS` | Workspace symbols |
+| `<leader>ss` | Document symbols             |
+| `<leader>sS` | Workspace symbols            |
 
 ### Code (`<leader>c`)
 
-| Key | Description |
-|-----|-------------|
-| `gd` | Go to definition (FzfLua) |
-| `gr` | Go to references (FzfLua) |
-| `gI` | Go to implementation (FzfLua) |
-| `gy` | Go to type definition (FzfLua) |
-| `K` | Hover documentation |
-| `gl` | Open diagnostic float |
-| `<leader>cr` | Rename symbol |
-| `<leader>ca` | Code actions |
-| `<leader>cf` | Format buffer |
-| `<leader>ccd` | Copy diagnostic |
+| Key           | Description                    |
+| ------------- | ------------------------------ |
+| `gd`          | Go to definition (FzfLua)      |
+| `gr`          | Go to references (FzfLua)      |
+| `gI`          | Go to implementation (FzfLua)  |
+| `gy`          | Go to type definition (FzfLua) |
+| `K`           | Hover documentation            |
+| `gl`          | Open diagnostic float          |
+| `<leader>cr`  | Rename symbol                  |
+| `<leader>ca`  | Code actions                   |
+| `<leader>cf`  | Format buffer                  |
+| `<leader>ccd` | Copy diagnostic                |
 | `<leader>cgb` | Go build (async with quickfix) |
-| `<leader>cds` | Setup Go debug config |
+| `<leader>cds` | Setup Go debug config          |
 
 ### Git (`<leader>g`)
 
-| Key | Description |
-|-----|-------------|
-| `<leader>gc` | Git commits |
-| `<leader>gs` | Git status |
-| `<leader>gy` | Copy git link |
+| Key           | Description           |
+| ------------- | --------------------- |
+| `<leader>gc`  | Git commits           |
+| `<leader>gs`  | Git status            |
+| `<leader>gy`  | Copy git link         |
 | `<leader>gld` | View line commit diff |
-| `<leader>gwc` | Create git worktree |
-| `<leader>gws` | Switch git worktree |
-| `<leader>gwd` | Delete git worktree |
+| `<leader>gwc` | Create git worktree   |
+| `<leader>gws` | Switch git worktree   |
+| `<leader>gwd` | Delete git worktree   |
 
 #### Git Hunks (`<leader>gh`)
 
-| Key | Description |
-|-----|-------------|
-| `]h/[h` | Next/prev hunk |
-| `]H/[H` | Last/first hunk |
-| `<leader>ghs` | Stage hunk |
-| `<leader>ghr` | Reset hunk |
-| `<leader>ghS` | Stage buffer |
-| `<leader>ghR` | Reset buffer |
+| Key           | Description         |
+| ------------- | ------------------- |
+| `]h/[h`       | Next/prev hunk      |
+| `]H/[H`       | Last/first hunk     |
+| `<leader>ghs` | Stage hunk          |
+| `<leader>ghr` | Reset hunk          |
+| `<leader>ghS` | Stage buffer        |
+| `<leader>ghR` | Reset buffer        |
 | `<leader>ghp` | Preview hunk inline |
-| `<leader>ghb` | Blame line |
-| `<leader>ghd` | Diff this |
+| `<leader>ghb` | Blame line          |
+| `<leader>ghd` | Diff this           |
 
 ### Navigation
 
-| Key | Description |
-|-----|-------------|
-| `s` | Flash jump |
-| `S` | Flash treesitter |
-| `r` | Remote flash (operator mode) |
-| `]m/[m` | Next/prev function |
-| `]]]/[[[` | Next/prev class |
-| `]d/[d` | Next/prev diagnostic |
+| Key       | Description                  |
+| --------- | ---------------------------- |
+| `s`       | Flash jump                   |
+| `S`       | Flash treesitter             |
+| `r`       | Remote flash (operator mode) |
+| `]m/[m`   | Next/prev function           |
+| `]]]/[[[` | Next/prev class              |
+| `]d/[d`   | Next/prev diagnostic         |
 
 ### Terminal
 
-| Key | Mode | Description |
-|-----|------|-------------|
+| Key     | Mode  | Description                |
+| ------- | ----- | -------------------------- |
 | `<A-h>` | n,t,i | Toggle horizontal terminal |
-| `<A-v>` | n,t,i | Toggle vertical terminal |
-| `<A-f>` | n,t,i | Toggle floating terminal |
-| `<Esc>` | t | Exit terminal mode |
+| `<A-v>` | n,t,i | Toggle vertical terminal   |
+| `<A-f>` | n,t,i | Toggle floating terminal   |
+| `<Esc>` | t     | Exit terminal mode         |
 
 ### Debug (`<leader>d`)
 
-| Key | Description |
-|-----|-------------|
+| Key          | Description       |
+| ------------ | ----------------- |
 | `<leader>db` | Toggle breakpoint |
-| `<leader>dc` | Continue |
-| `<leader>dC` | Run to cursor |
-| `<leader>di` | Step into |
-| `<leader>do` | Step over |
-| `<leader>dO` | Step out |
-| `<leader>dr` | REPL toggle |
-| `<leader>dl` | Run last |
-| `<leader>dt` | Terminate |
+| `<leader>dc` | Continue          |
+| `<leader>dC` | Run to cursor     |
+| `<leader>di` | Step into         |
+| `<leader>do` | Step over         |
+| `<leader>dO` | Step out          |
+| `<leader>dr` | REPL toggle       |
+| `<leader>dl` | Run last          |
+| `<leader>dt` | Terminate         |
 
 ## Custom Commands
 
@@ -216,6 +216,7 @@ nvim
 LSP servers are configured in the `lsp/` directory and automatically loaded by Neovim 0.11's built-in LSP system.
 
 Current servers:
+
 - **gopls** - Go language server
 - **lua_ls** - Lua language server
 - **bashls** - Bash language server
@@ -224,10 +225,12 @@ Current servers:
 - **golangci_lint_ls** - Go linter
 
 To enable a new LSP:
+
 1. Create `lsp/<server-name>.lua` with server config
 2. Add server name to `lua/config/lsp.lua` in `vim.lsp.enable()` call
 
 Example LSP config (`lsp/example.lua`):
+
 ```lua
 return {
   cmd = { 'example-lsp', '--stdio' },
