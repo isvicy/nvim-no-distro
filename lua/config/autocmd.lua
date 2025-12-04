@@ -169,3 +169,189 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.hl.on_yank()
   end,
 })
+
+-- Setup render-markdown highlights for specific colorschemes
+vim.api.nvim_create_autocmd('ColorScheme', {
+  group = augroup('markdown-highlights'),
+  callback = function()
+    local colorscheme = vim.g.colors_name or ''
+    local heading_colors, heading_bg, code_bg, checked_fg, unchecked_fg
+
+    if colorscheme:match('vesper') then
+      -- vesper: 使用主题真实调色板
+      heading_colors = {
+        '#FFC799', -- H1: yellowDark (橙黄)
+        '#99FFE4', -- H2: green/greenLight (青绿)
+        '#FFCFA8', -- H3: orange (橙色)
+        '#FF8080', -- H4: red (红色)
+        '#A0A0A0', -- H5: primary (灰色)
+        '#65737E', -- H6: symbol (深灰)
+      }
+      heading_bg = '#161616' -- bgDark
+      code_bg = '#232323'    -- bgDarker
+      checked_fg = '#99FFE4' -- green
+      unchecked_fg = '#505050' -- fgDisabled
+    elseif colorscheme:match('tundra') then
+      -- tundra (arctic): 使用主题真实调色板
+      heading_colors = {
+        '#BAE6FD', -- H1: sky._500 (天蓝)
+        '#B5E8B0', -- H2: green._500 (绿色)
+        '#A5B4FC', -- H3: indigo._500 (靛蓝)
+        '#FBC19D', -- H4: orange._500 (橙色)
+        '#FCA5A5', -- H5: red._500 (红色)
+        '#99BBBD', -- H6: opal._500 (青灰)
+      }
+      heading_bg = '#1F2937' -- gray._800
+      code_bg = '#1F2937'    -- gray._800
+      checked_fg = '#B5E8B0' -- green._500
+      unchecked_fg = '#4B5563' -- gray._600
+    else
+      -- 默认: 保持简单
+      return
+    end
+
+    for i, color in ipairs(heading_colors) do
+      vim.api.nvim_set_hl(0, '@markup.heading.' .. i .. '.markdown', {
+        fg = color,
+        bold = true,
+      })
+      vim.api.nvim_set_hl(0, 'RenderMarkdownH' .. i, { fg = color, bold = true })
+      vim.api.nvim_set_hl(0, 'RenderMarkdownH' .. i .. 'Bg', { bg = heading_bg })
+    end
+
+    vim.api.nvim_set_hl(0, 'RenderMarkdownChecked', { fg = checked_fg })
+    vim.api.nvim_set_hl(0, 'RenderMarkdownUnchecked', { fg = unchecked_fg })
+    vim.api.nvim_set_hl(0, 'RenderMarkdownCode', { bg = code_bg })
+  end,
+})
+
+-- Trigger for initial colorscheme
+vim.api.nvim_exec_autocmds('ColorScheme', {})
+
+-------------------------------------------------------------------------------
+--                           Markdown Folding
+-------------------------------------------------------------------------------
+
+-- Custom fold expression: fold based on heading level (#, ##, ###...)
+function _G.markdown_foldexpr()
+  local lnum = vim.v.lnum
+  local line = vim.fn.getline(lnum)
+  local heading = line:match('^(#+)%s')
+  if heading then
+    local level = #heading
+    if level == 1 then
+      -- H1 only valid at line 1 or after frontmatter (to avoid # comments in code blocks)
+      if lnum == 1 then
+        return '>1'
+      end
+      local frontmatter_end = vim.b.frontmatter_end
+      if frontmatter_end and (lnum == frontmatter_end + 1) then
+        return '>1'
+      end
+      -- Otherwise, ignore H1 (likely a code comment)
+      return '='
+    elseif level >= 2 and level <= 6 then
+      return '>' .. level
+    end
+  end
+  return '='
+end
+
+-- Set markdown folding options
+local function set_markdown_folding()
+  vim.opt_local.foldmethod = 'expr'
+  vim.opt_local.foldexpr = 'v:lua.markdown_foldexpr()'
+  vim.opt_local.foldlevel = 99 -- Start with all folds open
+
+  -- Detect frontmatter closing line (for H1 handling)
+  local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+  local found_first = false
+  for i, line in ipairs(lines) do
+    if line == '---' then
+      if not found_first then
+        found_first = true
+      else
+        vim.b.frontmatter_end = i
+        break
+      end
+    end
+  end
+end
+
+-- Apply folding settings to markdown files
+vim.api.nvim_create_autocmd('FileType', {
+  group = augroup('markdown-folding'),
+  pattern = 'markdown',
+  callback = set_markdown_folding,
+})
+
+-- Fold all headings of a specific level
+local function fold_headings_of_level(level)
+  vim.cmd('keepjumps normal! gg')
+  local total_lines = vim.fn.line('$')
+  for line = 1, total_lines do
+    local line_content = vim.fn.getline(line)
+    if line_content:match('^' .. string.rep('#', level) .. '%s') then
+      vim.cmd(string.format('keepjumps call cursor(%d, 1)', line))
+      if vim.fn.foldlevel(line) > 0 and vim.fn.foldclosed(line) == -1 then
+        vim.cmd('normal! za')
+      end
+    end
+  end
+end
+
+-- Fold multiple heading levels
+local function fold_markdown_headings(levels)
+  local saved_view = vim.fn.winsaveview()
+  for _, level in ipairs(levels) do
+    fold_headings_of_level(level)
+  end
+  vim.cmd('nohlsearch')
+  vim.fn.winrestview(saved_view)
+end
+
+-- Keymaps for folding (only in markdown files)
+vim.api.nvim_create_autocmd('FileType', {
+  group = augroup('markdown-fold-keymaps'),
+  pattern = 'markdown',
+  callback = function()
+    local opts = { buffer = true, silent = true }
+
+    -- Toggle fold with Enter
+    vim.keymap.set('n', '<CR>', function()
+      if vim.fn.foldlevel('.') > 0 then
+        vim.cmd('normal! za')
+      end
+    end, vim.tbl_extend('force', opts, { desc = 'Toggle fold' }))
+
+    -- zk: Fold all H2+ headings
+    vim.keymap.set('n', 'zk', function()
+      vim.cmd('silent update')
+      vim.cmd('edit!')
+      vim.cmd('normal! zR')
+      fold_markdown_headings({ 6, 5, 4, 3, 2 })
+      vim.cmd('normal! zz')
+    end, vim.tbl_extend('force', opts, { desc = 'Fold H2+ headings' }))
+
+    -- zu: Unfold all
+    vim.keymap.set('n', 'zu', function()
+      vim.cmd('silent update')
+      vim.cmd('normal! zR')
+    end, vim.tbl_extend('force', opts, { desc = 'Unfold all' }))
+  end,
+})
+
+-- Auto fold H2+ headings when opening markdown files
+vim.api.nvim_create_autocmd('BufRead', {
+  group = augroup('markdown-auto-fold'),
+  pattern = '*.md',
+  callback = function()
+    if vim.b.auto_folded then
+      return
+    end
+    vim.b.auto_folded = true
+    vim.defer_fn(function()
+      vim.cmd('normal zk')
+    end, 100)
+  end,
+})
