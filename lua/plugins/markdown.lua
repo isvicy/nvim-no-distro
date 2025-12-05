@@ -109,6 +109,7 @@ return {
   },
   {
     'hotoo/pangu.vim',
+    ft = 'markdown',
     cmd = 'Pangu',
   },
 }
