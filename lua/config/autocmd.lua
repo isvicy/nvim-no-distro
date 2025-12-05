@@ -188,7 +188,7 @@ vim.api.nvim_create_autocmd('ColorScheme', {
         '#65737E', -- H6: symbol (深灰)
       }
       heading_bg = '#161616' -- bgDark
-      code_bg = '#232323'    -- bgDarker
+      code_bg = '#232323' -- bgDarker
       checked_fg = '#99FFE4' -- green
       unchecked_fg = '#505050' -- fgDisabled
     elseif colorscheme:match('tundra') then
@@ -202,7 +202,7 @@ vim.api.nvim_create_autocmd('ColorScheme', {
         '#99BBBD', -- H6: opal._500 (青灰)
       }
       heading_bg = '#1F2937' -- gray._800
-      code_bg = '#1F2937'    -- gray._800
+      code_bg = '#1F2937' -- gray._800
       checked_fg = '#B5E8B0' -- green._500
       unchecked_fg = '#4B5563' -- gray._600
     else
@@ -232,15 +232,60 @@ vim.api.nvim_exec_autocmds('ColorScheme', {})
 --                           Markdown Folding
 -------------------------------------------------------------------------------
 
+-- Build code block ranges using treesitter (called once per buffer)
+local function build_code_block_ranges(bufnr)
+  local ranges = {}
+  local ok, parser = pcall(vim.treesitter.get_parser, bufnr, 'markdown')
+  if not ok or not parser then
+    return ranges
+  end
+
+  local trees = parser:parse()
+  if not trees or #trees == 0 then
+    return ranges
+  end
+
+  for _, tree in ipairs(trees) do
+    local root = tree:root()
+    -- Query for fenced_code_block nodes
+    local query_ok, query =
+      pcall(vim.treesitter.query.parse, 'markdown', '(fenced_code_block) @block')
+    if query_ok then
+      for _, node in query:iter_captures(root, bufnr, 0, -1) do
+        local start_row, _, end_row, _ = node:range()
+        table.insert(ranges, { start_row + 1, end_row + 1 }) -- 1-indexed
+      end
+    end
+  end
+  return ranges
+end
+
+-- Check if line is in any cached code block range
+local function is_in_code_block_cached(lnum)
+  local ranges = vim.b.code_block_ranges or {}
+  for _, range in ipairs(ranges) do
+    if lnum >= range[1] and lnum <= range[2] then
+      return true
+    end
+  end
+  return false
+end
+
 -- Custom fold expression: fold based on heading level (#, ##, ###...)
 function _G.markdown_foldexpr()
   local lnum = vim.v.lnum
+
+  -- Skip lines inside code blocks (using cached ranges)
+  if is_in_code_block_cached(lnum) then
+    return '='
+  end
+
   local line = vim.fn.getline(lnum)
   local heading = line:match('^(#+)%s')
   if heading then
     local level = #heading
     if level == 1 then
-      -- H1 only valid at line 1 or after frontmatter (to avoid # comments in code blocks)
+      -- H1 only valid at line 1 or after frontmatter
       if lnum == 1 then
         return '>1'
       end
@@ -248,7 +293,7 @@ function _G.markdown_foldexpr()
       if frontmatter_end and (lnum == frontmatter_end + 1) then
         return '>1'
       end
-      -- Otherwise, ignore H1 (likely a code comment)
+      -- Otherwise, ignore H1 (likely inside code block or other context)
       return '='
     elseif level >= 2 and level <= 6 then
       return '>' .. level
@@ -259,6 +304,11 @@ end
 
 -- Set markdown folding options
 local function set_markdown_folding()
+  local bufnr = vim.api.nvim_get_current_buf()
+
+  -- Build and cache code block ranges
+  vim.b.code_block_ranges = build_code_block_ranges(bufnr)
+
   vim.opt_local.foldmethod = 'expr'
   vim.opt_local.foldexpr = 'v:lua.markdown_foldexpr()'
   vim.opt_local.foldlevel = 99 -- Start with all folds open
@@ -292,9 +342,12 @@ local function fold_headings_of_level(level)
   for line = 1, total_lines do
     local line_content = vim.fn.getline(line)
     if line_content:match('^' .. string.rep('#', level) .. '%s') then
-      vim.cmd(string.format('keepjumps call cursor(%d, 1)', line))
-      if vim.fn.foldlevel(line) > 0 and vim.fn.foldclosed(line) == -1 then
-        vim.cmd('normal! za')
+      -- Skip headings inside code blocks (using cached ranges)
+      if not is_in_code_block_cached(line) then
+        vim.cmd(string.format('keepjumps call cursor(%d, 1)', line))
+        if vim.fn.foldlevel(line) > 0 and vim.fn.foldclosed(line) == -1 then
+          vim.cmd('normal! za')
+        end
       end
     end
   end
@@ -327,6 +380,8 @@ vim.api.nvim_create_autocmd('FileType', {
     -- zk: Fold all H2+ headings
     vim.keymap.set('n', 'zk', function()
       vim.cmd('silent update')
+      -- Refresh code block ranges cache
+      vim.b.code_block_ranges = build_code_block_ranges(vim.api.nvim_get_current_buf())
       vim.cmd('edit!')
       vim.cmd('normal! zR')
       fold_markdown_headings({ 6, 5, 4, 3, 2 })
