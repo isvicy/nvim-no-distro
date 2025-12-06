@@ -2,8 +2,11 @@
 return {
   {
     'arnamak/stay-centered.nvim',
-    opts = function()
-      require('stay-centered').setup({})
+    opts = {
+      skip_filetypes = { 'dashboard' },
+    },
+    config = function(_, opts)
+      require('stay-centered').setup(opts)
       -- Define the keymap to toggle the stay-centered plugin
       vim.keymap.set('n', '<leader>US', function()
         require('stay-centered').toggle()
