@@ -3,13 +3,20 @@ return {
     'folke/flash.nvim',
     event = 'VeryLazy',
     opts = {
+      -- Remove a,i,o,r,x from labels to avoid conflicts with vim operators
+      labels = 'fghjklqwetyupzcvbnm',
+      search = {
+        -- Use "search" mode instead of "exact" - if you mistype, flash won't exit
+        -- This prevents accidental insertions when you mistype during flash
+        mode = 'search',
+      },
       modes = {
         search = {
           enabled = false,
         },
         char = {
-          enabled = true,
-          jump_labels = true,
+          -- Disable f/t/F/T flash enhancement
+          enabled = false,
         },
       },
       label = {

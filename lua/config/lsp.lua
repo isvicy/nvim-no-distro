@@ -8,6 +8,7 @@ vim.lsp.enable('terraformls')
 vim.lsp.enable('rust_analyzer')
 vim.lsp.enable('basedpyright')
 vim.lsp.enable('ruff')
+vim.lsp.enable('harper_ls') -- Grammar checker for markdown
 
 vim.diagnostic.config({
   virtual_lines = false, -- Disable virtual lines completely
