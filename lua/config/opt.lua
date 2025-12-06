@@ -89,3 +89,8 @@ vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 
 -- Use custom fold text with treesitter syntax highlighting
 vim.opt.foldtext = 'v:lua.require("utils.fold").custom_foldtext()'
+
+-- Spell checking: set language to English
+-- Use `zg` to add word to dictionary, `zw` to mark as wrong
+-- Use `]s` / `[s` to navigate between misspelled words
+vim.opt.spelllang = { 'en' }

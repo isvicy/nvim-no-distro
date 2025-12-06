@@ -4,6 +4,26 @@ local function augroup(name)
   return vim.api.nvim_create_augroup('user ' .. name, { clear = true })
 end
 
+-- Clear jumps when opening Neovim to avoid old jump history clutter
+vim.api.nvim_create_autocmd('BufWinEnter', {
+  group = augroup('clear_jumps'),
+  once = true,
+  callback = function()
+    vim.schedule(function()
+      vim.cmd('clearjumps')
+    end)
+  end,
+})
+
+-- Enable spell checking for text-based file types
+vim.api.nvim_create_autocmd('FileType', {
+  group = augroup('wrap_spell'),
+  pattern = { 'text', 'plaintex', 'typst', 'gitcommit', 'markdown' },
+  callback = function()
+    vim.opt_local.spell = true
+  end,
+})
+
 vim.api.nvim_create_autocmd('BufEnter', {
   callback = function()
     vim.opt_local.formatoptions:remove({ 'c', 'r', 'o' })
