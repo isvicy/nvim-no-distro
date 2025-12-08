@@ -18,7 +18,7 @@ vim.api.nvim_create_autocmd('BufWinEnter', {
 -- Enable spell checking for text-based file types
 vim.api.nvim_create_autocmd('FileType', {
   group = augroup('wrap_spell'),
-  pattern = { 'text', 'plaintex', 'typst', 'gitcommit', 'markdown' },
+  pattern = { 'text', 'plaintex', 'typst', 'gitcommit' },
   callback = function()
     vim.opt_local.spell = true
   end,
