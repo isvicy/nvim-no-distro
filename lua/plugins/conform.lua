@@ -19,6 +19,9 @@ return {
         shfmt = {
           args = { '-i', '2', '-ci' },
         },
+        deno_fmt = {
+          args = { 'fmt', '-', '--ext=md', '--prose-wrap=always', '--line-width=80' },
+        },
       },
       formatters_by_ft = {
         lua = { 'stylua' },
