@@ -1,6 +1,7 @@
 # Neovim Configuration
 
-A modern, modular Neovim configuration focused on Go development with excellent LSP support, fuzzy finding, and Git integration.
+A modern, modular Neovim configuration focused on Go development with excellent
+LSP support, fuzzy finding, and Git integration.
 
 ## Features
 
@@ -213,7 +214,8 @@ nvim
 
 ## Language Server Configuration
 
-LSP servers are configured in the `lsp/` directory and automatically loaded by Neovim 0.11's built-in LSP system.
+LSP servers are configured in the `lsp/` directory and automatically loaded by
+Neovim 0.11's built-in LSP system.
 
 Current servers:
 
@@ -310,10 +312,13 @@ utils.git.open_line_commit_diffview()
 
 This configuration is optimized for fast startup:
 
-- **Lazy loading**: Most plugins load on-demand via events, commands, or filetypes
-- **Version pinning**: Critical plugins are version-pinned to avoid breaking changes
+- **Lazy loading**: Most plugins load on-demand via events, commands, or
+  filetypes
+- **Version pinning**: Critical plugins are version-pinned to avoid breaking
+  changes
 - **Modular structure**: Clear separation allows for tree-shaking
-- **Async operations**: Heavy operations use `vim.system` instead of blocking `io.popen`
+- **Async operations**: Heavy operations use `vim.system` instead of blocking
+  `io.popen`
 
 Typical startup time: **< 50ms** (with cached plugins)
 
