@@ -1,5 +1,5 @@
 return {
-  { -- Autoformat
+  {
     'stevearc/conform.nvim',
     event = { 'BufWritePre' },
     cmd = { 'ConformInfo' },
@@ -35,6 +35,7 @@ return {
         sh = { 'shfmt', 'shellcheck' },
         terraform = { 'terraform_fmt' },
         toml = { 'tombi' },
+        proto = { 'buf' },
       },
     },
   },
