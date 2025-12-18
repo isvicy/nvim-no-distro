@@ -6,9 +6,8 @@ vim.lsp.enable('docker_language_server')
 vim.lsp.enable('bashls')
 vim.lsp.enable('terraformls')
 vim.lsp.enable('rust_analyzer')
-vim.lsp.enable('basedpyright')
-vim.lsp.enable('ruff')
-vim.lsp.enable('harper_ls') -- Grammar checker for markdown
+vim.lsp.enable('ty')
+vim.lsp.enable('harper_ls') -- Grammar checker for Markdown
 
 vim.diagnostic.config({
   virtual_lines = false, -- Disable virtual lines completely
