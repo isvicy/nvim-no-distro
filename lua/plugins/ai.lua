@@ -3,6 +3,9 @@ return {
     'zbirenbaum/copilot.lua',
     cmd = 'Copilot',
     event = 'InsertEnter',
+    requires = {
+      'copilotlsp-nvim/copilot-lsp', -- for NES functionality
+    },
     config = function()
       require('copilot').setup({
         suggestion = {
@@ -10,7 +13,7 @@ return {
           auto_trigger = true,
           keymap = {
             accept = '<M-p>',
-            accept_line = '<M-o>',
+            accept_line = '<M-l>',
             accept_word = '<M-w>',
           },
         },
@@ -24,7 +27,6 @@ return {
           ['grug-far-history'] = false,
           ['grug-far-help'] = false,
         },
-        copilot_model = 'gpt-4o-copilot',
       })
       -- set highlight group for copilot
       local comment_hl = vim.api.nvim_get_hl(0, { name = 'Comment' })
