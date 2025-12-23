@@ -135,82 +135,58 @@ M.setup_go_debug_config = function()
     table.insert(choices, relative_path)
   end
 
-  -- Prepend index numbers for easy selection
-  for i, choice in ipairs(choices) do
-    choices[i] = string.format('%d. %s', i, choice)
-  end
-
   -- Prompt user to select main package
-  local prompt_lines = { 'Select the main package to debug:' }
-  for _, choice in ipairs(choices) do
-    table.insert(prompt_lines, choice)
-  end
-  table.insert(prompt_lines, '')
-  table.insert(prompt_lines, 'Enter the number of your choice:')
-
-  -- Display prompt
-  for _, line in ipairs(prompt_lines) do
-    vim.cmd('echo ""')
-    vim.cmd('echohl Question')
-    vim.cmd(string.format('echo "%s"', line:gsub('"', '\\"')))
-    vim.cmd('echohl None')
-  end
-
-  -- Get user input
-  local ok, input = pcall(vim.fn.input, '')
-  if not ok or not input or input == '' then
-    vim.notify('Debug setup cancelled', vim.log.levels.WARN)
-    return
-  end
-
-  local choice_num = tonumber(input)
-  if not choice_num or choice_num < 1 or choice_num > #main_dirs then
-    vim.notify('Invalid selection', vim.log.levels.ERROR)
-    return
-  end
-
-  local selected_dir = main_dirs[choice_num]
-
-  -- Create launch.json compatible with VSCode and nvim-dap
-  local dap_config = {
-    version = '0.2.0',
-    configurations = {
-      {
-        type = 'go',
-        name = 'Debug (from launch.json)',
-        request = 'launch',
-        mode = 'debug',
-        program = selected_dir,
-      },
-    },
-  }
-
-  -- Write to .vscode/launch.json
-  local vscode_dir = project_root .. '/.vscode'
-  local launch_json_path = vscode_dir .. '/launch.json'
-
-  -- Ensure .vscode directory exists
-  if vim.fn.isdirectory(vscode_dir) == 0 then
-    local ok_mkdir = pcall(vim.fn.mkdir, vscode_dir, 'p')
-    if not ok_mkdir then
-      vim.notify('Failed to create .vscode directory', vim.log.levels.ERROR)
+  vim.ui.select(choices, {
+    prompt = 'Select the main package to debug:',
+  }, function(choice, idx)
+    if not choice then
+      vim.notify('Debug setup cancelled', vim.log.levels.WARN)
       return
     end
-  end
 
-  -- Write launch.json
-  local json_content = vim.fn.json_encode(dap_config)
-  local file = io.open(launch_json_path, 'w')
-  if not file then
-    vim.notify('Failed to write launch.json', vim.log.levels.ERROR)
-    return
-  end
+    local selected_dir = main_dirs[idx]
 
-  file:write(json_content)
-  file:close()
+    -- Create launch.json compatible with VSCode and nvim-dap
+    local dap_config = {
+      version = '0.2.0',
+      configurations = {
+        {
+          type = 'go',
+          name = 'Debug (from launch.json)',
+          request = 'launch',
+          mode = 'debug',
+          program = selected_dir,
+        },
+      },
+    }
 
-  vim.notify('Debug configuration created: ' .. launch_json_path, vim.log.levels.INFO)
-  vim.notify('Selected program: ' .. selected_dir, vim.log.levels.INFO)
+    -- Write to .vscode/launch.json
+    local vscode_dir = project_root .. '/.vscode'
+    local launch_json_path = vscode_dir .. '/launch.json'
+
+    -- Ensure .vscode directory exists
+    if vim.fn.isdirectory(vscode_dir) == 0 then
+      local ok_mkdir = pcall(vim.fn.mkdir, vscode_dir, 'p')
+      if not ok_mkdir then
+        vim.notify('Failed to create .vscode directory', vim.log.levels.ERROR)
+        return
+      end
+    end
+
+    -- Write launch.json
+    local json_content = vim.fn.json_encode(dap_config)
+    local file = io.open(launch_json_path, 'w')
+    if not file then
+      vim.notify('Failed to write launch.json', vim.log.levels.ERROR)
+      return
+    end
+
+    file:write(json_content)
+    file:close()
+
+    vim.notify('Debug configuration created: ' .. launch_json_path, vim.log.levels.INFO)
+    vim.notify('Selected program: ' .. selected_dir, vim.log.levels.INFO)
+  end)
 end
 
 return M
