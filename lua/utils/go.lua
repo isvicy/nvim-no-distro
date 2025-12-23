@@ -135,36 +135,36 @@ M.setup_go_debug_config = function()
     table.insert(choices, relative_path)
   end
 
-  -- Prompt user to select main package
-  vim.ui.select(choices, {
-    prompt = 'Select the main package to debug:',
-  }, function(choice, idx)
-    if not choice then
-      vim.notify('Debug setup cancelled', vim.log.levels.WARN)
-      return
-    end
-
-    local selected_dir = main_dirs[idx]
-
-    -- Create launch.json compatible with VSCode and nvim-dap
-    local dap_config = {
-      version = '0.2.0',
-      configurations = {
-        {
-          type = 'go',
-          name = 'Debug (from launch.json)',
-          request = 'launch',
-          mode = 'debug',
-          program = selected_dir,
-        },
-      },
+  ---Write debug config to launch.json
+  ---@param selected_dir string
+  ---@param display_name string
+  ---@param args string|nil
+  local function write_launch_json(selected_dir, display_name, args)
+    local config_entry = {
+      type = 'go',
+      name = 'Debug ' .. display_name,
+      request = 'launch',
+      mode = 'debug',
+      program = selected_dir,
+      cwd = selected_dir,
     }
 
-    -- Write to .vscode/launch.json
+    if args and args ~= '' then
+      local args_list = {}
+      for arg in args:gmatch('%S+') do
+        table.insert(args_list, arg)
+      end
+      config_entry.args = args_list
+    end
+
+    local dap_config = {
+      version = '0.2.0',
+      configurations = { config_entry },
+    }
+
     local vscode_dir = project_root .. '/.vscode'
     local launch_json_path = vscode_dir .. '/launch.json'
 
-    -- Ensure .vscode directory exists
     if vim.fn.isdirectory(vscode_dir) == 0 then
       local ok_mkdir = pcall(vim.fn.mkdir, vscode_dir, 'p')
       if not ok_mkdir then
@@ -173,7 +173,6 @@ M.setup_go_debug_config = function()
       end
     end
 
-    -- Write launch.json
     local json_content = vim.fn.json_encode(dap_config)
     local file = io.open(launch_json_path, 'w')
     if not file then
@@ -185,7 +184,26 @@ M.setup_go_debug_config = function()
     file:close()
 
     vim.notify('Debug configuration created: ' .. launch_json_path, vim.log.levels.INFO)
-    vim.notify('Selected program: ' .. selected_dir, vim.log.levels.INFO)
+  end
+
+  -- Prompt user to select main package
+  vim.ui.select(choices, {
+    prompt = 'Select the main package to debug:',
+  }, function(choice, idx)
+    if not choice then
+      vim.notify('Debug setup cancelled', vim.log.levels.WARN)
+      return
+    end
+
+    local selected_dir = main_dirs[idx]
+    local display_name = choice
+
+    -- Prompt for args
+    vim.ui.input({
+      prompt = 'Args (optional, space-separated): ',
+    }, function(args)
+      write_launch_json(selected_dir, display_name, args)
+    end)
   end)
 end
 
