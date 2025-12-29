@@ -33,6 +33,7 @@ return {
         html = { 'htmlbeautifier' },
         markdown = { 'deno_fmt' },
         sh = { 'shfmt', 'shellcheck' },
+        zsh = { 'shfmt', 'shellcheck' },
         terraform = { 'terraform_fmt' },
         toml = { 'tombi' },
         proto = { 'buf' },
