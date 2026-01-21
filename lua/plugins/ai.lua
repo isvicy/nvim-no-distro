@@ -3,9 +3,7 @@ return {
     'zbirenbaum/copilot.lua',
     cmd = 'Copilot',
     event = 'InsertEnter',
-    requires = {
-      'copilotlsp-nvim/copilot-lsp', -- for NES functionality
-    },
+    dependencies = { 'samiulsami/copilot-eldritch.nvim' },
     config = function()
       require('copilot').setup({
         suggestion = {
@@ -31,6 +29,9 @@ return {
       -- set highlight group for copilot
       local comment_hl = vim.api.nvim_get_hl(0, { name = 'Comment' })
       vim.api.nvim_set_hl(0, 'CopilotSuggestion', { italic = true, fg = comment_hl.fg })
+
+      -- fancy loading effect
+      require('copilot-eldritch').setup()
     end,
   },
   {
