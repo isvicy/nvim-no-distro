@@ -54,6 +54,19 @@ return {
         desc = 'Toggle Floating Terminal (general)',
       },
     },
-    opts = {},
+    opts = {
+      terminals = {
+        type_opts = {
+          float = {
+            -- relative = 'editor',
+            -- row = 0.8,
+            -- col = 0.8,
+            width = 1,
+            height = 1,
+            border = 'single',
+          },
+        },
+      },
+    },
   },
 }
