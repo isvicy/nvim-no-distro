@@ -122,7 +122,8 @@ return {
               local line = vim.api.nvim_get_current_line()
               local col = vim.api.nvim_win_get_cursor(0)[2]
               local before_cursor = line:sub(1, col)
-              local start_pos, end_pos = before_cursor:find(trigger_text .. '[^' .. trigger_text .. ']*$')
+              local start_pos, end_pos =
+                before_cursor:find(trigger_text .. '[^' .. trigger_text .. ']*$')
               if start_pos then
                 for _, item in ipairs(items) do
                   if not item.trigger_text_modified then
