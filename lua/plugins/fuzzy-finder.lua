@@ -165,7 +165,12 @@ return {
         require('fff.download').download_or_build_binary()
       end
     end,
-    opts = {},
+    opts = {
+      keymaps = {
+        close = { '<Esc>', '<C-c>' },
+        select_split = '<C-x>',
+      },
+    },
     lazy = false,
     keys = {
       {
