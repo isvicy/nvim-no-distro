@@ -21,11 +21,20 @@ return {
   {
     'miroshQa/debugmaster.nvim',
     dependencies = { 'mfussenegger/nvim-dap', 'jbyuki/one-small-step-for-vimkind' },
+    keys = {
+      {
+        '<leader>d',
+        function()
+          require('debugmaster').mode.toggle()
+        end,
+        desc = 'toggle debug mode',
+        mode = { 'n', 'v' },
+        nowait = true,
+      },
+    },
     config = function()
       local dm = require('debugmaster')
-      vim.keymap.set({ 'n', 'v' }, '<leader>d', dm.mode.toggle, { nowait = true })
-
-      dm.plugins.osv_integration.enabled = true -- needed if you want to debug neovim lua code
+      dm.plugins.osv_integration.enabled = true -- Needed if you want to debug Lua code of Neovim.
     end,
   },
 }
