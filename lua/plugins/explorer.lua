@@ -7,7 +7,6 @@ return {
   keys = {
     {
       '<leader>fy',
-
       function()
         require('yazi').yazi()
       end,

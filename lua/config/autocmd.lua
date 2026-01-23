@@ -57,7 +57,7 @@ vim.api.nvim_create_autocmd('VimEnter', {
 -- Register user commands
 vim.api.nvim_create_user_command('PrintFullPath', utils.print_full_path, {})
 vim.api.nvim_create_user_command('DBUIPrompt', utils.prompt_db_connection, {})
--- golang develop related
+-- Golang develop related
 vim.api.nvim_create_user_command('GoBuild', utils.async_go_build_quickfix, {})
 vim.api.nvim_create_user_command('CopyDiagnostic', utils.copy_diagnostic, {})
 vim.api.nvim_create_user_command('GoDebugSetup', utils.setup_go_debug_config, {})
