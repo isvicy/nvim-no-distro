@@ -3,8 +3,8 @@ return {
     'neovim/nvim-lspconfig',
   },
   {
-    -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
-    -- used for completion, annotations and signatures of Neovim apis
+    -- `lazydev` configures Lua LSP for your Neovim config, runtime, and plugins
+    -- used for completion, annotations, and signatures of Neovim APIs
     'folke/lazydev.nvim',
     ft = 'lua',
     opts = {
@@ -77,7 +77,7 @@ return {
     },
     config = function()
       require('barbecue').setup({
-        create_autocmd = false, -- prevent barbecue from updating itself automatically
+        create_autocmd = false, -- Prevent barbecue from updating itself automatically
       })
 
       vim.api.nvim_create_autocmd({
@@ -86,7 +86,7 @@ return {
         'CursorHold',
         'InsertLeave',
 
-        -- include this if you have set `show_modified` to `true`
+        -- Include this if you have set `show_modified` to `true`
         -- "BufModifiedSet",
       }, {
         group = vim.api.nvim_create_augroup('barbecue.updater', {}),
@@ -96,7 +96,7 @@ return {
       })
     end,
   },
-  -- lsp preview
+  -- LSP preview
   {
     'rmagatti/goto-preview',
     event = 'LspAttach',
@@ -132,7 +132,7 @@ return {
   },
   {
     'folke/trouble.nvim',
-    opts = {}, -- for default options, refer to the configuration section for custom setup.
+    opts = {}, -- For default options, refer to the configuration section for custom setup.
     cmd = 'Trouble',
     keys = {
       {
