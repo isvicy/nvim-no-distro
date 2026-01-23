@@ -14,7 +14,7 @@ return {
       },
     },
     opts = {
-      notify_on_error = false,
+      notify_on_error = true,
       formatters = {
         shfmt = {
           args = { '-i', '2', '-ci' },
