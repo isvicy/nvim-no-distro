@@ -73,6 +73,9 @@ return {
       'nvim-tree/nvim-web-devicons',
     },
   },
+  -- This is very useful to replace without case aware.
+  -- Example:
+  --   `:S/child{,ren}/adult{,s}/g`: this means replace child to adult and take care of the plural.
   {
     'tpope/vim-abolish',
   },
