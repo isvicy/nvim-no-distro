@@ -11,7 +11,7 @@ return {
     end,
   },
 
-  -- Render markdown with icons and highlights
+  -- Render Markdown with icons and highlights
   {
     'MeanderingProgrammer/render-markdown.nvim',
     ft = 'markdown',
