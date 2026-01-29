@@ -53,12 +53,16 @@ keymap_set('n', '<C-l>', '<C-w>l', { desc = 'Go to Right Window' })
 keymap_set('i', '<c-p>', '<nop>')
 keymap_set('i', '<c-n>', '<nop>')
 
+-- Support for Linux classic move shortcuts
+keymap_set('i', '<C-a>', '<C-o>0')
+keymap_set('i', '<C-e>', '<C-o>$')
+
 -- Highlight current word under cursor without jumping
 keymap_set('n', '*', function()
   vim.cmd.normal({ '*N', bang = true })
 end, { desc = 'Highlight word without jumping' })
 
--- lsp defaults:
+-- LSP defaults:
 -- https://neovim.io/doc/user/news-0.11.html#_defaults
 -- remove defaulty keymaps
 vim.keymap.del('n', 'grr')
