@@ -20,10 +20,11 @@ return {
 
       return {
         'default-title',
+        fzf_bin = 'sk',
         fzf_colors = true,
         fzf_opts = {
-
           ['--no-scrollbar'] = true,
+          ['--algo'] = 'frizbee',
         },
         defaults = {
           -- formatter = "path.filename_first",
