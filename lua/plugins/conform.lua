@@ -20,7 +20,7 @@ return {
           args = { '-i', '2', '-ci' },
         },
         deno_fmt = {
-          args = { 'fmt', '-', '--ext=md', '--prose-wrap=always', '--line-width=80' },
+          args = { 'fmt', '-', '--ext=md', '--prose-wrap=always', '--line-width=120' },
         },
       },
       formatters_by_ft = {
