@@ -8,11 +8,13 @@ return {
       -- Enable transparent background to inherit kitty's blur effect
       vim.api.nvim_create_autocmd('ColorScheme', {
         callback = function()
-          vim.api.nvim_set_hl(0, 'Normal', { bg = 'NONE' })
-          vim.api.nvim_set_hl(0, 'NormalNC', { bg = 'NONE' })
-          vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'NONE' })
-          vim.api.nvim_set_hl(0, 'SignColumn', { bg = 'NONE' })
-          vim.api.nvim_set_hl(0, 'EndOfBuffer', { bg = 'NONE' })
+          if vim.o.background == 'dark' then
+            vim.api.nvim_set_hl(0, 'Normal', { bg = 'NONE' })
+            vim.api.nvim_set_hl(0, 'NormalNC', { bg = 'NONE' })
+            vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'NONE' })
+            vim.api.nvim_set_hl(0, 'SignColumn', { bg = 'NONE' })
+            vim.api.nvim_set_hl(0, 'EndOfBuffer', { bg = 'NONE' })
+          end
         end,
       })
 
@@ -43,6 +45,7 @@ return {
       require('themify').setup({
         'datsfilipe/vesper.nvim',
         'sam4llis/nvim-tundra',
+        'ember-theme/nvim',
 
         loader = loader,
         async = true,
