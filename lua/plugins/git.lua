@@ -168,7 +168,26 @@ return {
   },
   {
     'dlyongemallo/diffview.nvim',
-    cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
+    cmd = { 'DiffviewOpen', 'DiffviewFileHistory', 'DiffviewClose', 'DiffviewToggleFiles', 'DiffviewFocusFiles' },
+    keys = {
+      { '<leader>gm', '<cmd>DiffviewOpen<cr>', desc = 'Open Diffview (merge/rebase conflicts)' },
+      { '<leader>gh', '<cmd>DiffviewFileHistory %<cr>', desc = 'File History (current file)' },
+      { '<leader>gH', '<cmd>DiffviewFileHistory<cr>', desc = 'File History (repo)' },
+    },
+    init = function()
+      vim.api.nvim_create_autocmd('VimEnter', {
+        once = true,
+        callback = function()
+          local git_dir = vim.fn.finddir('.git', '.;')
+          if git_dir == '' then return end
+          if vim.fn.filereadable(git_dir .. '/MERGE_HEAD') == 1
+            or vim.fn.isdirectory(git_dir .. '/rebase-merge') == 1
+            or vim.fn.isdirectory(git_dir .. '/rebase-apply') == 1 then
+            require('lazy').load({ plugins = { 'diffview.nvim' } })
+          end
+        end,
+      })
+    end,
   },
   {
     'lewis6991/gitsigns.nvim',
@@ -216,6 +235,8 @@ return {
         end, "Prev Hunk")
         map("n", "]H", function() gs.nav_hunk("last") end, "Last Hunk")
         map("n", "[H", function() gs.nav_hunk("first") end, "First Hunk")
+        map("n", "]x", function() vim.fn.search([[^\(<<<<<<<\|=======\|>>>>>>>\)]]) end, "Next Conflict Marker")
+        map("n", "[x", function() vim.fn.search([[^\(<<<<<<<\|=======\|>>>>>>>\)]], "b") end, "Prev Conflict Marker")
         map({ "n", "v" }, "<leader>ghs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
         map({ "n", "v" }, "<leader>ghr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
         map("n", "<leader>ghS", gs.stage_buffer, "Stage Buffer")
