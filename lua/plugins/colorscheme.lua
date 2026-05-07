@@ -45,7 +45,10 @@ return {
       require('themify').setup({
         'datsfilipe/vesper.nvim',
         'sam4llis/nvim-tundra',
-        'ember-theme/nvim',
+        {
+          'ember-theme/nvim',
+          blacklist = { 'ember-light' },
+        },
 
         loader = loader,
         async = true,
