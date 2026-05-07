@@ -168,21 +168,52 @@ return {
   },
   {
     'dlyongemallo/diffview.nvim',
-    cmd = { 'DiffviewOpen', 'DiffviewFileHistory', 'DiffviewClose', 'DiffviewToggleFiles', 'DiffviewFocusFiles' },
+    cmd = {
+      'DiffviewOpen',
+      'DiffviewFileHistory',
+      'DiffviewClose',
+      'DiffviewToggleFiles',
+      'DiffviewFocusFiles',
+    },
     keys = {
-      { '<leader>gm', '<cmd>DiffviewOpen<cr>', desc = 'Open Diffview (merge/rebase conflicts)' },
-      { '<leader>gh', '<cmd>DiffviewFileHistory %<cr>', desc = 'File History (current file)' },
-      { '<leader>gH', '<cmd>DiffviewFileHistory<cr>', desc = 'File History (repo)' },
+      {
+        '<leader>gm',
+        function()
+          local view = require('diffview.lib').get_current_view()
+          vim.cmd(view and 'DiffviewClose' or 'DiffviewOpen')
+        end,
+        desc = 'Toggle Diffview (merge/rebase conflicts)',
+      },
+      {
+        '<leader>gf',
+        function()
+          local view = require('diffview.lib').get_current_view()
+          vim.cmd(view and 'DiffviewClose' or 'DiffviewFileHistory %')
+        end,
+        desc = 'Toggle File History (current file)',
+      },
+      {
+        '<leader>gF',
+        function()
+          local view = require('diffview.lib').get_current_view()
+          vim.cmd(view and 'DiffviewClose' or 'DiffviewFileHistory')
+        end,
+        desc = 'Toggle File History (repo)',
+      },
     },
     init = function()
       vim.api.nvim_create_autocmd('VimEnter', {
         once = true,
         callback = function()
           local git_dir = vim.fn.finddir('.git', '.;')
-          if git_dir == '' then return end
-          if vim.fn.filereadable(git_dir .. '/MERGE_HEAD') == 1
+          if git_dir == '' then
+            return
+          end
+          if
+            vim.fn.filereadable(git_dir .. '/MERGE_HEAD') == 1
             or vim.fn.isdirectory(git_dir .. '/rebase-merge') == 1
-            or vim.fn.isdirectory(git_dir .. '/rebase-apply') == 1 then
+            or vim.fn.isdirectory(git_dir .. '/rebase-apply') == 1
+          then
             require('lazy').load({ plugins = { 'diffview.nvim' } })
           end
         end,
