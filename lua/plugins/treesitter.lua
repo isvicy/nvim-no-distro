@@ -13,6 +13,7 @@ local ensure_installed = {
   'go',
   'python',
   'sql',
+  'ssh_config',
 }
 
 return {
