@@ -10,6 +10,7 @@ return {
     config = function(_, opts)
       local lint = require('lint')
       lint.linters_by_ft = opts.linters_by_ft
+      lint.linters.sqlfluff.args = { 'lint', '--format=json', '--dialect=postgres', '-' }
 
       vim.api.nvim_create_autocmd({ 'BufWritePost', 'BufReadPost', 'InsertLeave' }, {
         group = vim.api.nvim_create_augroup('nvim-lint', { clear = true }),
