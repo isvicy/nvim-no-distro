@@ -7,6 +7,7 @@ return {
   },
   root_markers = {
     'flake.nix',
+    '.jj',
     '.git',
   },
   settings = {

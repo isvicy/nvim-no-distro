@@ -1,118 +1,80 @@
-local function create_worktree()
-  local fzf = require('fzf-lua')
-  local Worktree = require('git-worktree')
-
-  -- Get list of branches and tags
-  local branches_and_tags = vim.fn.systemlist('git branch -a && git tag')
-
-  -- Use fzf to select a branch or tag
-  fzf.fzf_exec(branches_and_tags, {
-    prompt = 'Select branch or tag: ',
-    actions = {
-      ['default'] = function(selected)
-        local branch = selected[1]:gsub('^%s*', ''):gsub('^%*%s*', '')
-
-        -- Determine if it's a remote branch and extract the upstream
-        local upstream = nil
-        if branch:match('^remotes/') then
-          upstream = branch:match('^remotes/([^/]+)')
-
-          branch = branch:gsub('^remotes/[^/]+/', '')
-        end
-
-        -- Prompt for the worktree path
-        vim.ui.input({ prompt = 'Enter worktree path: ' }, function(path)
-          if path and path ~= '' then
-            -- Create the worktree
-            Worktree.create_worktree(path, branch, upstream)
-            print('Worktree created: ' .. path)
-          else
-            print('Worktree creation cancelled')
-          end
-        end)
-      end,
-    },
-  })
-end
-
-local function switch_worktree()
-  local fzf = require('fzf-lua')
-  local Worktree = require('git-worktree')
-
-  local worktrees = vim.fn.systemlist('git worktree list')
-
-  fzf.fzf_exec(worktrees, {
-    prompt = 'Select worktree to switch to: ',
-    actions = {
-      ['default'] = function(selected)
-        local path = selected[1]:match('^([^%s]+)')
-        Worktree.switch_worktree(path)
-        print('Switched to worktree: ' .. path)
-      end,
-    },
-  })
-end
-
-local function delete_worktree()
-  local fzf = require('fzf-lua')
-  local Worktree = require('git-worktree')
-
-  local worktrees = vim.fn.systemlist('git worktree list')
-  local current_path = vim.fn.getcwd()
-
-  fzf.fzf_exec(worktrees, {
-    prompt = 'Select worktree to delete: ',
-    actions = {
-      ['default'] = function(selected)
-        local path = selected[1]:match('^([^%s]+)')
-        vim.ui.input(
-          { prompt = 'Are you sure you want to delete this worktree? (y/N): ' },
-          function(input)
-            if input and input:lower() == 'y' then
-              local is_current = vim.fn.fnamemodify(path, ':p')
-                == vim.fn.fnamemodify(current_path, ':p')
-
-              local actual_git_root
-              if is_current then
-                -- Get the actual git root directory (where .git is located)
-                actual_git_root = vim.fn.systemlist('git rev-parse --git-common-dir')[1]
-
-                -- Change to the actual git root directory before deleting
-                vim.cmd('cd ' .. actual_git_root)
-              end
-
-              -- considering the user already confirmed deletion, we use force deletion
-              Worktree.delete_worktree(path, true)
-              print('Deleted worktree: ' .. path)
-
-              if is_current then
-                print('Moved to actual git root directory: ' .. actual_git_root)
-
-                -- Close all buffers
-                vim.cmd('bufdo bd')
-
-                -- Open a new buffer with the actual git root directory
-                vim.cmd('edit ' .. actual_git_root)
-
-                -- Refresh the file explorer (if you're using nvim-tree)
-                -- vim.cmd("NvimTreeRefresh")
-
-                -- Or, if you're using another file explorer, you might need to use a different command
-                -- For example, with neo-tree:
-
-                -- vim.cmd("Neotree reveal")
-              end
-            else
-              print('Worktree deletion cancelled')
-            end
-          end
-        )
-      end,
-    },
-  })
-end
-
 return {
+  {
+    'NicolasGB/jj.nvim',
+    cmd = {
+      'J',
+      'Jdiff',
+      'Jhdiff',
+      'Jvdiff',
+      'Jbrowse',
+      'Jread',
+      'Jedit',
+      'Jsplit',
+      'Jvsplit',
+      'Jtabedit',
+    },
+    keys = {
+      {
+        '<leader>jl',
+        function()
+          require('jj.cmd').log()
+        end,
+        desc = 'JJ Log',
+      },
+      {
+        '<leader>js',
+        function()
+          require('jj.cmd').status()
+        end,
+        desc = 'JJ Status',
+      },
+      {
+        '<leader>jd',
+        function()
+          require('jj.cmd').describe()
+        end,
+        desc = 'JJ Describe',
+      },
+      {
+        '<leader>ja',
+        function()
+          require('jj.annotate').file()
+        end,
+        desc = 'JJ Annotate (Blame File)',
+      },
+      {
+        '<leader>jA',
+        function()
+          require('jj.annotate').line()
+        end,
+        desc = 'JJ Annotate Line',
+      },
+      {
+        '<leader>jb',
+        '<cmd>Jbrowse<cr>',
+        desc = 'JJ Browse on Remote',
+      },
+      {
+        '<leader>ghb',
+        function()
+          require('utils.vcs').blame_line()
+        end,
+        desc = 'Blame Line (git/jj)',
+      },
+      {
+        '<leader>ghB',
+        function()
+          require('utils.vcs').blame_file()
+        end,
+        desc = 'Blame Buffer (git/jj)',
+      },
+    },
+    opts = {
+      diff = {
+        backend = 'diffview',
+      },
+    },
+  },
   {
     'ThePrimeagen/git-worktree.nvim',
     dependencies = {
@@ -121,18 +83,24 @@ return {
     keys = {
       {
         '<leader>gwc',
-        create_worktree,
-        desc = 'Create Git Worktree',
+        function()
+          require('utils.vcs').create_workspace()
+        end,
+        desc = 'Create Git Worktree / JJ Workspace',
       },
       {
         '<leader>gws',
-        switch_worktree,
-        desc = 'Switch Git Worktree',
+        function()
+          require('utils.vcs').switch_workspace()
+        end,
+        desc = 'Switch Git Worktree / JJ Workspace',
       },
       {
         '<leader>gwd',
-        delete_worktree,
-        desc = 'Delete Git Worktree',
+        function()
+          require('utils.vcs').delete_workspace()
+        end,
+        desc = 'Delete Git Worktree / JJ Workspace',
       },
     },
     config = function()
@@ -146,27 +114,63 @@ return {
   },
   {
     'ruifm/gitlinker.nvim',
-    keys = { { '<leader>gy', desc = 'copy remote git link of current line or select' } }, -- this is the built-in keymap
+    keys = {
+      {
+        '<leader>gy',
+        function()
+          require('utils.vcs').copy_remote_link('n')
+        end,
+        mode = 'n',
+        desc = 'Copy remote git/jj link of current line',
+      },
+      {
+        '<leader>gy',
+        '<cmd>lua require("utils.vcs").copy_remote_link("v")<cr>',
+        mode = 'v',
+        desc = 'Copy remote git/jj link of selection',
+      },
+    },
     dependencies = { 'ojroques/nvim-osc52', 'nvim-lua/plenary.nvim' },
     config = function()
+      local hosts = require('gitlinker.hosts')
+      local callbacks = {
+        ['git.enceinte.cc'] = hosts.get_gogs_type_url,
+      }
+      local ok_local, local_callbacks = pcall(require, 'local.gitlinker')
+      if ok_local and type(local_callbacks) == 'table' then
+        callbacks = vim.tbl_extend('force', callbacks, local_callbacks)
+      end
+
       require('gitlinker').setup({
         opts = {
           action_callback = function(url)
             -- yank to unnamed register
-            vim.api.nvim_command('let @" = \'' .. url .. "'")
+            vim.fn.setreg('"', url)
 
             -- copy to the system clipboard using OSC52
             require('osc52').copy(url)
           end,
         },
-        callbacks = {
-          ['git.enceinte.cc'] = require('gitlinker.hosts').get_gogs_type_url,
-        },
+        callbacks = callbacks,
       })
+
+      -- gitlinker.setup() unconditionally binds <leader>gy; rebind to VCS-aware wrapper.
+      vim.keymap.set('n', '<leader>gy', function()
+        require('utils.vcs').copy_remote_link('n')
+      end, { silent = true, desc = 'Copy remote git/jj link of current line' })
+      vim.keymap.set(
+        'v',
+        '<leader>gy',
+        '<cmd>lua require("utils.vcs").copy_remote_link("v")<cr>',
+        { silent = true, desc = 'Copy remote git/jj link of selection' }
+      )
     end,
   },
   {
     'dlyongemallo/diffview.nvim',
+    opts = {
+      preferred_adapter = 'jj',
+    },
     cmd = {
       'DiffviewOpen',
       'DiffviewFileHistory',

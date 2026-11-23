@@ -3,3 +3,4 @@ doc/tags
 **/*.luarc.json
 lazy-lock.json
 **/.documented
+lua/local/

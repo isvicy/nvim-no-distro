@@ -1,7 +1,7 @@
 return {
   cmd = { 'harper-ls', '--stdio' },
   filetypes = { 'markdown' },
-  root_markers = { '.git' },
+  root_markers = { '.jj', '.git' },
   settings = {
     ['harper-ls'] = {
       userDictPath = vim.fn.stdpath('config') .. '/spell/en.utf-8.add',

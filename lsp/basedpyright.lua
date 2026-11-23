@@ -1,7 +1,7 @@
 return {
   cmd = { 'basedpyright-langserver', '--stdio' },
   filetypes = { 'python' },
-  root_markers = { 'pyproject.toml', 'setup.py', '.git', 'pyrightconfig.json' },
+  root_markers = { 'pyproject.toml', 'setup.py', '.jj', '.git', 'pyrightconfig.json' },
   settings = {
     basedpyright = {
       disableOrganizeImports = true,

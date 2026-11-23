@@ -23,6 +23,9 @@ return {
   'nvim-lualine/lualine.nvim',
   event = 'VeryLazy',
   config = function()
+    local lualine_jj = require('config.modules.lualine-jj')
+    lualine_jj.setup()
+
     local dmode_enabled = false
     vim.api.nvim_create_autocmd('User', {
       pattern = 'DebugModeChanged',
@@ -51,8 +54,9 @@ return {
         lualine_b = {},
         lualine_c = {
           { 'filename', path = 1 },
-          { 'branch' },
-          { 'diff' },
+          { 'branch', cond = lualine_jj.is_not_jj },
+          { lualine_jj.status, icon = '', cond = lualine_jj.is_jj },
+          { 'diff', source = lualine_jj.diff_source },
           { 'diagnostics' },
           { macro },
         },

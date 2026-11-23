@@ -105,7 +105,7 @@ return {
         end,
         desc = 'Find Config File',
       },
-      { '<leader>fg', '<cmd>FzfLua git_files<cr>', desc = 'Find Files (git-files)' },
+      { '<leader>fg', '<cmd>FzfLua vcs_files<cr>', desc = 'Find Files (VCS)' },
       { '<leader>fr', '<cmd>FzfLua oldfiles<cr>', desc = 'Recent' },
       {
         '<leader>fR',
@@ -115,9 +115,21 @@ return {
         desc = 'Recent (cwd)',
       },
 
-      -- git
-      { '<leader>gc', '<cmd>FzfLua git_commits<CR>', desc = 'Commits' },
-      { '<leader>gs', '<cmd>FzfLua git_status<CR>', desc = 'Status' },
+      -- git / jj
+      {
+        '<leader>gc',
+        function()
+          require('utils.vcs').vcs_commits()
+        end,
+        desc = 'Commits / JJ Log',
+      },
+      {
+        '<leader>gs',
+        function()
+          require('utils.vcs').vcs_status()
+        end,
+        desc = 'Status (git/jj)',
+      },
 
       -- search
       { '<leader>s"', '<cmd>FzfLua registers<cr>', desc = 'Registers' },

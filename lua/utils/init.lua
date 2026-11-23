@@ -12,7 +12,7 @@ local M = {}
 -- Constants
 
 local CONSTANTS = {
-  PROJECT_MARKERS = { '.git', 'go.mod' },
+  PROJECT_MARKERS = { '.jj', '.git', 'go.mod' },
 }
 
 ---Get the project root directory by searching for markers
@@ -26,8 +26,9 @@ M.get_project_root = function()
   while potential_root ~= '/' do
     for _, marker in ipairs(CONSTANTS.PROJECT_MARKERS) do
       local marker_path = potential_root .. '/' .. marker
-      local is_found = (marker == '.git' and vim.fn.isdirectory(marker_path) == 1)
-        or (marker ~= '.git' and vim.fn.filereadable(marker_path) == 1)
+      local is_dir_marker = marker == '.git' or marker == '.jj'
+      local is_found = (is_dir_marker and vim.fn.isdirectory(marker_path) == 1)
+        or (not is_dir_marker and vim.fn.filereadable(marker_path) == 1)
 
       if is_found then
         vim.notify(

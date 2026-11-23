@@ -18,7 +18,7 @@ vim.api.nvim_create_autocmd('BufWinEnter', {
 -- Enable spell checking for text-based file types
 vim.api.nvim_create_autocmd('FileType', {
   group = augroup('wrap_spell'),
-  pattern = { 'text', 'plaintex', 'typst', 'gitcommit' },
+  pattern = { 'text', 'plaintex', 'typst', 'gitcommit', 'jjdescription' },
   callback = function()
     vim.opt_local.spell = true
   end,
@@ -40,8 +40,11 @@ vim.api.nvim_create_autocmd('VimEnter', {
     -- change to the directory
     if directory then
       local opts = { cwd = data.file }
+      local dir = opts.cwd or vim.uv.cwd()
       local builtin
-      if vim.uv.fs_stat((opts.cwd or vim.loop.cwd()) .. '/.git') then
+      if vim.uv.fs_stat(dir .. '/.jj') then
+        builtin = 'jj_files'
+      elseif vim.uv.fs_stat(dir .. '/.git') then
         opts.show_untracked = true
         builtin = 'git_files'
       else
@@ -51,7 +54,7 @@ vim.api.nvim_create_autocmd('VimEnter', {
     end
   end,
   group = augroup('find files'),
-  desc = 'open Telescope when opening a dir',
+  desc = 'open fzf-lua when opening a dir',
 })
 
 -- Register user commands
@@ -65,6 +68,9 @@ vim.api.nvim_create_user_command('GoDebugSetup', utils.setup_go_debug_config, {}
 vim.api.nvim_create_user_command('DiffViewLineCommit', function()
   utils.open_line_commit_diffview()
 end, {})
+vim.api.nvim_create_user_command('Blame', function()
+  require('utils.vcs').blame_file()
+end, { desc = 'Blame current buffer (git/jj)' })
 
 -- Register keymaps
 
