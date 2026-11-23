@@ -139,7 +139,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
     map('K', vim.lsp.buf.hover, 'Hover Documentation')
     map('<leader>cr', vim.lsp.buf.rename, 'Rename all references')
     map('<leader>ca', vim.lsp.buf.code_action, 'Code Action')
-    map('<leader>cf', vim.lsp.buf.format, 'Format')
+    map('<leader>cf', function()
+      require('conform').format({ async = true, lsp_format = 'fallback' })
+    end, 'Format')
     map('<leader>bf', '<cmd>FzfLua lsp_document_symbols<cr>', 'find symbols in buffer')
 
     local function client_supports_method(client, method, bufnr)
