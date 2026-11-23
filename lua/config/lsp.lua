@@ -1,3 +1,14 @@
+vim.lsp.config('vtsls', {
+  settings = {
+    vtsls = {
+      autoUseWorkspaceTsdk = true,
+    },
+  },
+})
+vim.lsp.config('harper_ls', {
+  filetypes = { 'markdown' },
+})
+
 vim.lsp.enable('gopls')
 vim.lsp.enable('golangci_lint_ls')
 vim.lsp.enable('lua_ls')
@@ -10,6 +21,12 @@ vim.lsp.enable('ty')
 vim.lsp.enable('harper_ls') -- Grammar checker for Markdown
 vim.lsp.enable('yamlls')
 vim.lsp.enable('vtsls')
+vim.lsp.enable('biome')
+vim.lsp.enable('cssls')
+vim.lsp.enable('html')
+vim.lsp.enable('jsonls')
+vim.lsp.enable('tailwindcss')
+vim.lsp.enable('protols')
 
 vim.diagnostic.config({
   virtual_lines = false, -- Disable virtual lines completely
